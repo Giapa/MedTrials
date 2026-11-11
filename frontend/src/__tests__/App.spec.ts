@@ -93,6 +93,7 @@ describe('study search', () => {
               },
             ],
             more_results: true,
+            next_page_token: 'page-2',
           }),
         }
       }),
@@ -114,5 +115,43 @@ describe('study search', () => {
     expect(wrapper.text()).toContain('Δεν έχει ξεκινήσει η προσέλκυση')
     expect(wrapper.text()).toContain('Υπάρχουν περισσότερα αποτελέσματα')
     expect(wrapper.text()).toContain('Το μητρώο δεν παρέχει κείμενο κριτηρίων.')
+  })
+
+  it('loads more for the submitted search even if the form changes', async () => {
+    const study = (id: string, title: string) => ({
+      id, title, summary: null, status: 'RECRUITING', last_updated: null,
+      eligibility: { criteria: null, minimum_age: null, maximum_age: null, sex: null,
+        healthy_volunteers: null, gender_based: null, gender_description: null },
+      locations: [{ facility: 'Athens', city: 'Athens', status: null }],
+      source_url: `https://clinicaltrials.gov/study/${id}`,
+    })
+    const fetchMock = vi.fn(async (url: string, options?: RequestInit) => {
+      if (url === '/api/example-study') return { ok: false }
+      const body = JSON.parse(String(options?.body))
+      if (!body.page_token) return { ok: true, json: async () => ({
+        studies: [study('NCT12345678', 'First study')], more_results: true, next_page_token: 'page-2',
+      }) }
+      return { ok: true, json: async () => ({
+        studies: [study('NCT12345678', 'First study'), study('NCT87654321', 'Second study')],
+        more_results: false, next_page_token: null,
+      }) }
+    })
+    vi.stubGlobal('fetch', fetchMock)
+    const wrapper = mount(App)
+    await flushPromises()
+    await wrapper.get('input[name="condition"]').setValue('breast cancer')
+    await wrapper.get('input[name="openStudiesOnly"]').setValue(true)
+    await wrapper.get('form').trigger('submit')
+    await flushPromises()
+    await wrapper.get('input[name="condition"]').setValue('diabetes')
+    await wrapper.get('input[name="openStudiesOnly"]').setValue(false)
+    await wrapper.get('button[name="load-more"]').trigger('click')
+    await flushPromises()
+    expect(fetchMock).toHaveBeenCalledWith('/api/studies/search', expect.objectContaining({
+      body: JSON.stringify({ condition: 'breast cancer', open_studies_only: true, page_token: 'page-2' }),
+    }))
+    expect(wrapper.findAll('.search-results article')).toHaveLength(2)
+    expect(wrapper.text()).toContain('Second study')
+    expect(wrapper.find('button[name="load-more"]').exists()).toBe(false)
   })
 })

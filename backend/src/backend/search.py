@@ -14,11 +14,12 @@ class SearchRequest(BaseModel):
         str, StringConstraints(strip_whitespace=True, min_length=1, max_length=120)
     ]
     open_studies_only: StrictBool = False
+    page_token: Annotated[str, StringConstraints(min_length=1, max_length=2048)] | None = None
 
 
 class RegistryResults(BaseModel):
     studies: list[RegistryStudy]
-    nextPageToken: str | None = None
+    nextPageToken: Annotated[str, StringConstraints(min_length=1, max_length=2048)] | None = None
 
 
 @router.post("/api/studies/search")
@@ -35,6 +36,8 @@ async def search_studies(
         }
         if query.open_studies_only:
             params["filter.overallStatus"] = "RECRUITING,NOT_YET_RECRUITING"
+        if query.page_token is not None:
+            params["pageToken"] = query.page_token
         response = await client.get(
             "https://clinicaltrials.gov/api/v2/studies", params=params
         )
@@ -78,4 +81,5 @@ async def search_studies(
     return {
         "studies": studies,
         "more_results": registry_results.nextPageToken is not None,
+        "next_page_token": registry_results.nextPageToken,
     }

@@ -1,0 +1,163 @@
+{
+  "checked_at_utc": "2026-11-11T17:47:38.284691+00:00",
+  "dataset_sha256": "f2bf0f2fc8598c91bccc4a85e044c8bc1d9c73739713e71f2d35638be731d0e8",
+  "summary": {
+    "found": 0,
+    "missed": 8,
+    "errors": 2,
+    "references_changed": 0,
+    "target_hit_rate": 0.0
+  },
+  "reference_status": {
+    "NCT06966700": "current",
+    "NCT02119819": "current",
+    "NCT07099898": "current",
+    "NCT02798055": "current"
+  },
+  "results": [
+    {
+      "id": "breast-en",
+      "language": "English",
+      "query": "breast cancer",
+      "expected_id": "NCT06966700",
+      "outcome": "missed",
+      "returned_ids": [
+        "NCT04752332",
+        "NCT04873362",
+        "NCT06841354",
+        "NCT07108517",
+        "NCT00278070",
+        "NCT01250379",
+        "NCT00005980",
+        "NCT00428896",
+        "NCT05038735",
+        "NCT04059484"
+      ],
+      "more_results": true,
+      "http_status": 200
+    },
+    {
+      "id": "breast-el",
+      "language": "Greek",
+      "query": "καρκίνος μαστού",
+      "expected_id": "NCT06966700",
+      "outcome": "missed",
+      "returned_ids": [],
+      "more_results": false,
+      "http_status": 200
+    },
+    {
+      "id": "diabetes-en",
+      "language": "English",
+      "query": "type 2 diabetes",
+      "expected_id": "NCT02119819",
+      "outcome": "missed",
+      "returned_ids": [
+        "NCT06066528",
+        "NCT03730662",
+        "NCT00442325",
+        "NCT01215994",
+        "NCT01106651",
+        "NCT00191464",
+        "NCT04560998",
+        "NCT03878706",
+        "NCT06131372",
+        "NCT00799448"
+      ],
+      "more_results": true,
+      "http_status": 200
+    },
+    {
+      "id": "diabetes-el",
+      "language": "Greek",
+      "query": "διαβήτης τύπου 2",
+      "expected_id": "NCT02119819",
+      "outcome": "missed",
+      "returned_ids": [],
+      "more_results": false,
+      "http_status": 200
+    },
+    {
+      "id": "lung-en",
+      "language": "English",
+      "query": "small cell lung cancer",
+      "expected_id": "NCT07099898",
+      "outcome": "missed",
+      "returned_ids": [
+        "NCT02352948",
+        "NCT00661011",
+        "NCT04139317",
+        "NCT00686959",
+        "NCT00278070",
+        "NCT06074588",
+        "NCT05756153",
+        "NCT00363415",
+        "NCT06793215",
+        "NCT06780085"
+      ],
+      "more_results": true,
+      "http_status": 200
+    },
+    {
+      "id": "lung-el",
+      "language": "Greek",
+      "query": "μικροκυτταρικός καρκίνος πνεύμονα",
+      "expected_id": "NCT07099898",
+      "outcome": "missed",
+      "returned_ids": [],
+      "more_results": false,
+      "http_status": 200
+    },
+    {
+      "id": "scleroderma-en",
+      "language": "English",
+      "query": "scleroderma",
+      "expected_id": "NCT02798055",
+      "outcome": "missed",
+      "returned_ids": [
+        "NCT05626751",
+        "NCT06716606",
+        "NCT03313180",
+        "NCT05785624",
+        "NCT07497087",
+        "NCT07491523",
+        "NCT07908108",
+        "NCT06025578",
+        "NCT05559580",
+        "NCT05878717"
+      ],
+      "more_results": true,
+      "http_status": 200
+    },
+    {
+      "id": "scleroderma-el",
+      "language": "Greek",
+      "query": "σκληρόδερμα",
+      "expected_id": "NCT02798055",
+      "outcome": "missed",
+      "returned_ids": [],
+      "more_results": false,
+      "http_status": 200
+    },
+    {
+      "id": "diabetes-sentence-en",
+      "language": "English sentence",
+      "query": "I have type 2 diabetes",
+      "expected_id": "NCT02119819",
+      "outcome": "error",
+      "returned_ids": [],
+      "more_results": null,
+      "http_status": 502
+    },
+    {
+      "id": "diabetes-sentence-el",
+      "language": "Greek sentence",
+      "query": "Έχω διαβήτη τύπου 2",
+      "expected_id": "NCT02119819",
+      "outcome": "error",
+      "returned_ids": [],
+      "more_results": null,
+      "http_status": 502
+    }
+  ]
+}

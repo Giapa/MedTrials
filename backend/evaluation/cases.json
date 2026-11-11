@@ -1,0 +1,45 @@
+{
+  "description": "Fictional searches with manually selected public reference records. A reference is potentially relevant by condition and listed Greek location, not a determination of eligibility.",
+  "references": [
+    {
+      "id": "NCT06966700",
+      "title": "A Clinical Study of Sacituzumab Tirumotecan (Sac-TMT, MK-2870) in People With Breast Cancer (MK-2870-032)",
+      "source_url": "https://clinicaltrials.gov/study/NCT06966700",
+      "record_updated": "2026-11-10",
+      "reason": "The title and condition mention breast cancer; the record lists sites in Greece."
+    },
+    {
+      "id": "NCT02119819",
+      "title": "A Study to Compare a New Drug for Type 2 Diabetes to Placebo and to a Treatment Already Available for Type 2 Diabetes",
+      "source_url": "https://clinicaltrials.gov/study/NCT02119819",
+      "record_updated": "2021-05-27",
+      "reason": "The title and condition mention type 2 diabetes; the record lists sites in Greece."
+    },
+    {
+      "id": "NCT07099898",
+      "title": "A Study of GSK5764227 in Participants With Relapsed Small Cell Lung Cancer (SCLC) [EMBOLD SCLC-301]",
+      "source_url": "https://clinicaltrials.gov/study/NCT07099898",
+      "record_updated": "2026-11-10",
+      "reason": "The title mentions small cell lung cancer; the record lists sites in Greece."
+    },
+    {
+      "id": "NCT02798055",
+      "title": "Bosentan Treatment of Digital Ulcers Related to Systemic Sclerosis",
+      "source_url": "https://clinicaltrials.gov/study/NCT02798055",
+      "record_updated": "2019-07-05",
+      "reason": "The title mentions systemic sclerosis and the registry lists scleroderma as a condition; the record lists a site in Greece."
+    }
+  ],
+  "cases": [
+    {"id": "breast-en", "language": "English", "query": "breast cancer", "expected_id": "NCT06966700"},
+    {"id": "breast-el", "language": "Greek", "query": "καρκίνος μαστού", "expected_id": "NCT06966700"},
+    {"id": "diabetes-en", "language": "English", "query": "type 2 diabetes", "expected_id": "NCT02119819"},
+    {"id": "diabetes-el", "language": "Greek", "query": "διαβήτης τύπου 2", "expected_id": "NCT02119819"},
+    {"id": "lung-en", "language": "English", "query": "small cell lung cancer", "expected_id": "NCT07099898"},
+    {"id": "lung-el", "language": "Greek", "query": "μικροκυτταρικός καρκίνος πνεύμονα", "expected_id": "NCT07099898"},
+    {"id": "scleroderma-en", "language": "English", "query": "scleroderma", "expected_id": "NCT02798055"},
+    {"id": "scleroderma-el", "language": "Greek", "query": "σκληρόδερμα", "expected_id": "NCT02798055"},
+    {"id": "diabetes-sentence-en", "language": "English sentence", "query": "I have type 2 diabetes", "expected_id": "NCT02119819"},
+    {"id": "diabetes-sentence-el", "language": "Greek sentence", "query": "Έχω διαβήτη τύπου 2", "expected_id": "NCT02119819"}
+  ]
+}

@@ -76,6 +76,7 @@ def test_search_returns_only_greek_locations_and_source_links():
             }
         ],
         "more_results": True,
+        "next_page_token": "more",
     }
 
 
@@ -123,7 +124,7 @@ def test_search_omits_studies_without_a_greek_location():
         )
     finally:
         app.dependency_overrides.clear()
-    assert response.json() == {"studies": [], "more_results": False}
+    assert response.json() == {"studies": [], "more_results": False, "next_page_token": None}
 
 
 def test_search_does_not_treat_invalid_registry_data_as_no_results():
@@ -190,3 +191,27 @@ def test_optional_recruitment_filter_is_sent_to_the_registry():
     finally:
         app.dependency_overrides.clear()
     assert response.status_code == 200
+
+
+def test_next_page_uses_the_original_search_and_registry_token():
+    def reply(request):
+        assert request.url.params["query.cond"] == "breast cancer"
+        assert request.url.params["filter.advanced"] == "AREA[LocationCountry]Greece"
+        assert request.url.params["filter.overallStatus"] == "RECRUITING,NOT_YET_RECRUITING"
+        assert request.url.params["pageToken"] == "next-page"
+        return httpx.Response(200, json={"studies": []})
+
+    async def mock_client():
+        async with httpx.AsyncClient(transport=httpx.MockTransport(reply)) as client:
+            yield client
+
+    app.dependency_overrides[registry_client] = mock_client
+    try:
+        response = TestClient(app).post(
+            "/api/studies/search",
+            json={"condition": "breast cancer", "open_studies_only": True, "page_token": "next-page"},
+        )
+    finally:
+        app.dependency_overrides.clear()
+    assert response.status_code == 200
+    assert response.json()["next_page_token"] is None

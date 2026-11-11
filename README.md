@@ -47,4 +47,4 @@ npm run lint
 npm run format:check
 ```
 
-These checks do not measure search quality or medical accuracy. A reviewed set of examples and quality measures will be added in a later stage. Cypress is not configured.
+The [search evaluation](backend/evaluation/README.md) contains a small set of fictional searches and linked reference records, plus a command to measure whether the app shows each selected record. It documents the first results and the limits of that measure. It is not a clinical evaluation. Cypress is not configured.
