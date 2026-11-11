@@ -16,6 +16,12 @@ def test_example_shows_record_and_greek_location():
                 "lastUpdatePostDateStruct": {"date": "2019-07-05"},
             },
             "descriptionModule": {"briefSummary": "A study description."},
+            "eligibilityModule": {
+                "eligibilityCriteria": "Inclusion Criteria:\n\n* Must be an adult.\n\nExclusion Criteria:\n\n* Prior condition.",
+                "minimumAge": "18 Years",
+                "sex": "ALL",
+                "healthyVolunteers": False,
+            },
             "contactsLocationsModule": {
                 "locations": [
                     {
@@ -51,6 +57,15 @@ def test_example_shows_record_and_greek_location():
         "id": "NCT02798055",
         "title": "A registry study",
         "summary": "A study description.",
+        "eligibility": {
+            "criteria": "Inclusion Criteria:\n\n* Must be an adult.\n\nExclusion Criteria:\n\n* Prior condition.",
+            "minimum_age": "18 Years",
+            "maximum_age": None,
+            "sex": "ALL",
+            "healthy_volunteers": False,
+            "gender_based": None,
+            "gender_description": None,
+        },
         "status": "COMPLETED",
         "last_updated": "2019-07-05",
         "locations": [{"facility": "Athens Hospital", "city": "Athens"}],

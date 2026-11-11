@@ -64,6 +64,7 @@ async def search_studies(
                     "id": study_id,
                     "title": study.identificationModule.briefTitle,
                     "summary": study.descriptionModule.briefSummary,
+                    "eligibility": study.eligibilityModule.model_dump(),
                     "status": study.statusModule.overallStatus,
                     "last_updated": update.date if update else None,
                     "locations": locations,

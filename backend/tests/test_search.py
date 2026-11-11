@@ -54,6 +54,15 @@ def test_search_returns_only_greek_locations_and_source_links():
                 "id": "NCT12345678",
                 "title": "Study title",
                 "summary": None,
+                "eligibility": {
+                    "criteria": None,
+                    "minimum_age": None,
+                    "maximum_age": None,
+                    "sex": None,
+                    "healthy_volunteers": None,
+                    "gender_based": None,
+                    "gender_description": None,
+                },
                 "status": "RECRUITING",
                 "last_updated": None,
                 "locations": [
@@ -122,6 +131,32 @@ def test_search_does_not_treat_invalid_registry_data_as_no_results():
         async with httpx.AsyncClient(
             transport=httpx.MockTransport(lambda request: httpx.Response(200, json={}))
         ) as client:
+            yield client
+
+    app.dependency_overrides[registry_client] = mock_client
+    try:
+        response = TestClient(app).post(
+            "/api/studies/search", json={"condition": "diabetes"}
+        )
+    finally:
+        app.dependency_overrides.clear()
+    assert response.status_code == 502
+
+
+def test_search_rejects_invalid_health_volunteer_value():
+    record = {
+        "protocolSection": {
+            "identificationModule": {"nctId": "NCT12345678", "briefTitle": "Study"},
+            "eligibilityModule": {"healthyVolunteers": "false"},
+            "contactsLocationsModule": {"locations": [{"country": "Greece"}]},
+        }
+    }
+
+    async def mock_client():
+        transport = httpx.MockTransport(
+            lambda request: httpx.Response(200, json={"studies": [record]})
+        )
+        async with httpx.AsyncClient(transport=transport) as client:
             yield client
 
     app.dependency_overrides[registry_client] = mock_client

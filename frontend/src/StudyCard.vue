@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { InterfaceCopy, Language } from './interface-copy'
 import type { Study } from './study-api'
+import ParticipationCriteria from './ParticipationCriteria.vue'
 
 defineProps<{ study: Study; copy: InterfaceCopy; language: Language }>()
 
@@ -60,6 +61,7 @@ function statusText(status: string | null | undefined, copy: InterfaceCopy) {
       </ul>
       <p v-else>{{ copy.noLocations }}</p>
     </div>
+    <ParticipationCriteria :study="study" :copy="copy" :language="language" />
     <div class="card-footer">
       <a :href="study.source_url" target="_blank" rel="noopener noreferrer">{{ copy.source }} ↗</a>
       <p>{{ copy.caveat }}</p>

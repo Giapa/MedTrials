@@ -5,6 +5,15 @@ const studySchema = z
     id: z.string().regex(/^NCT[0-9]{8}$/),
     title: z.string().min(1),
     summary: z.string().nullable(),
+    eligibility: z.object({
+      criteria: z.string().nullable(),
+      minimum_age: z.string().nullable(),
+      maximum_age: z.string().nullable(),
+      sex: z.string().nullable(),
+      healthy_volunteers: z.boolean().nullable(),
+      gender_based: z.boolean().nullable(),
+      gender_description: z.string().nullable(),
+    }),
     status: z.string().nullable(),
     last_updated: z.string().nullable(),
     locations: z.array(

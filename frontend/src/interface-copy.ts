@@ -25,7 +25,27 @@ export const interfaceCopy = {
     source: 'Δείτε την αρχική καταχώριση',
     caveat:
       'Οι πληροφορίες μπορεί να έχουν αλλάξει. Ελέγξτε την ημερομηνία ενημέρωσης και επικοινωνήστε με την ερευνητική ομάδα.',
-    scope: 'Οι απλές εξηγήσεις των κριτηρίων συμμετοχής δεν είναι ακόμη διαθέσιμες.',
+    scope:
+      'Τα κριτήρια συμμετοχής εμφανίζονται όπως καταχωρίστηκαν. Οι απλές εξηγήσεις τους δεν είναι ακόμη διαθέσιμες.',
+    participation: 'Ποιοι μπορούν να συμμετάσχουν;',
+    participationIntro:
+      'Οι ερευνητές ορίζουν προϋποθέσεις συμμετοχής και λόγους αποκλεισμού. Τα πεδία μπορεί να διαφέρουν από το κείμενο. Συζητήστε τυχόν διαφορές με την ερευνητική ομάδα, που μπορεί να επιβεβαιώσει αν μπορείτε να συμμετάσχετε.',
+    minAge: 'Ελάχιστη ηλικία',
+    maxAge: 'Μέγιστη ηλικία',
+    sexEligibility: 'Βιολογικό φύλο στο μητρώο',
+    sexAll: 'Όλα τα φύλα',
+    sexFemale: 'Γυναίκες',
+    sexMale: 'Άνδρες',
+    healthyVolunteers: 'Δέχεται υγιείς εθελοντές',
+    genderBased: 'Κριτήρια με βάση το κοινωνικό φύλο',
+    genderDescription: 'Περιγραφή κριτηρίων κοινωνικού φύλου',
+    yes: 'Ναι',
+    no: 'Όχι',
+    criteriaOriginal: 'Κείμενο κριτηρίων από το μητρώο',
+    criteriaNote:
+      'Το κείμενο εμφανίζεται όπως καταχωρίστηκε, συνήθως στα αγγλικά, και μπορεί να περιέχει ιατρικούς όρους. Μπορεί να μην περιλαμβάνει όλες τις προϋποθέσεις και τους λόγους αποκλεισμού.',
+    criteriaMissing: 'Το μητρώο δεν παρέχει κείμενο κριτηρίων.',
+    criteriaSource: 'Πηγή: αρχική καταχώριση, ενότητα Participation Criteria',
     searchTitle: 'Αναζητήστε μελέτες στην Ελλάδα',
     searchIntro:
       'Αναζητήστε μια πάθηση στο ClinicalTrials.gov. Προς το παρόν χρησιμοποιήστε αγγλικούς όρους, όπως “breast cancer”.',
@@ -78,7 +98,27 @@ export const interfaceCopy = {
     noLocations: 'No location in Greece is confirmed in the current record.',
     source: 'View the original record',
     caveat: 'Information may have changed. Check the update date and contact the study team.',
-    scope: 'Plain-language explanations of participation criteria are not yet available.',
+    scope:
+      'Participation criteria are shown as registered. Plain-language explanations are not yet available.',
+    participation: 'Who can take part?',
+    participationIntro:
+      'Researchers set requirements for joining and reasons for exclusion. The fields can differ from the written criteria. Discuss any differences with the study team, who can confirm whether you can participate.',
+    minAge: 'Minimum age',
+    maxAge: 'Maximum age',
+    sexEligibility: 'Sex listed in the registry',
+    sexAll: 'All sexes',
+    sexFemale: 'Female',
+    sexMale: 'Male',
+    healthyVolunteers: 'Accepts healthy volunteers',
+    genderBased: 'Gender-based eligibility',
+    genderDescription: 'Gender eligibility description',
+    yes: 'Yes',
+    no: 'No',
+    criteriaOriginal: 'Criteria text from the registry',
+    criteriaNote:
+      'The text is shown as registered, usually in English, and may contain medical terms. It may not include every requirement or reason for exclusion.',
+    criteriaMissing: 'The registry does not provide criteria text.',
+    criteriaSource: 'Source: original record, Participation Criteria section',
     searchTitle: 'Search studies in Greece',
     searchIntro:
       'Search ClinicalTrials.gov for a condition. For now, use English terms, such as “breast cancer”.',

@@ -370,6 +370,41 @@ a:focus-visible {
 .search-results .study-card {
   margin-top: 20px;
 }
+.participation {
+  border-top: 1px solid #e5ece7;
+  padding: 22px 0;
+  color: #4b6158;
+  line-height: 1.6;
+  font-size: 14px;
+}
+.participation summary {
+  color: #164c40;
+  font-weight: 700;
+  cursor: pointer;
+}
+.participation summary:focus-visible {
+  outline: 3px solid #dcaa34;
+  outline-offset: 3px;
+}
+.participation-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+.participation-facts dt {
+  color: #71827a;
+  font-size: 12px;
+}
+.participation-facts dd {
+  color: #18312d;
+  font-weight: 650;
+  margin: 4px 0 0;
+}
+.criteria-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
 @media (max-width: 640px) {
   .search-controls {
     flex-direction: column;
