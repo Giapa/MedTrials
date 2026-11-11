@@ -1,56 +1,15 @@
-from collections.abc import AsyncIterator
 from typing import Annotated
 
 import httpx
 from fastapi import Depends, FastAPI, HTTPException
-from pydantic import BaseModel, ValidationError
+from pydantic import ValidationError
+
+from backend.registry import RegistryStudy, registry_client
+from backend.search import router as search_router
 
 app = FastAPI()
+app.include_router(search_router)
 EXAMPLE_ID = "NCT02798055"
-
-
-class RegistryLocation(BaseModel):
-    facility: str | None = None
-    city: str | None = None
-    country: str | None = None
-
-
-class Identification(BaseModel):
-    nctId: str
-    briefTitle: str
-
-
-class DateValue(BaseModel):
-    date: str
-
-
-class Status(BaseModel):
-    overallStatus: str | None = None
-    lastUpdatePostDateStruct: DateValue | None = None
-
-
-class Description(BaseModel):
-    briefSummary: str | None = None
-
-
-class ContactsAndLocations(BaseModel):
-    locations: list[RegistryLocation] = []
-
-
-class Protocol(BaseModel):
-    identificationModule: Identification
-    statusModule: Status = Status()
-    descriptionModule: Description = Description()
-    contactsLocationsModule: ContactsAndLocations = ContactsAndLocations()
-
-
-class RegistryStudy(BaseModel):
-    protocolSection: Protocol
-
-
-async def registry_client() -> AsyncIterator[httpx.AsyncClient]:
-    async with httpx.AsyncClient(timeout=10) as client:
-        yield client
 
 
 @app.get("/api/example-study")

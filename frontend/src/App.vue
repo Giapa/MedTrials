@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 import StudyCard from './StudyCard.vue'
+import StudySearch from './StudySearch.vue'
 import { interfaceCopy, type Language } from './interface-copy'
 import { fetchExampleStudy, type Study } from './study-api'
 
@@ -50,6 +51,7 @@ onMounted(loadStudy)
         <p>{{ copy.notice }}</p>
       </div>
     </section>
+    <StudySearch :copy="copy" :language="language" />
     <section class="study-section" aria-live="polite">
       <div class="section-heading">
         <div>

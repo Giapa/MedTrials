@@ -287,3 +287,91 @@ a:focus-visible {
     gap: 18px;
   }
 }
+
+.search-section {
+  padding: 0 0 64px;
+}
+.search-section h2 {
+  font-size: 27px;
+  letter-spacing: -0.03em;
+  margin: 0 0 12px;
+}
+.search-section > p,
+.search-results > p {
+  color: #526962;
+  line-height: 1.6;
+}
+.search-form {
+  background: #fff;
+  border: 1px solid #dce7df;
+  border-radius: 14px;
+  margin-top: 24px;
+  padding: 24px;
+}
+.search-form label {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.search-controls {
+  display: flex;
+  gap: 12px;
+}
+.search-controls input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #9bafa3;
+  border-radius: 6px;
+  font: inherit;
+}
+.search-controls button {
+  border: 0;
+  border-radius: 6px;
+  background: #176754;
+  color: white;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 12px 20px;
+}
+.search-controls button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.search-controls input:focus-visible {
+  outline: 3px solid #dcaa34;
+  outline-offset: 3px;
+}
+.search-privacy {
+  color: #526962;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 0;
+}
+.search-form .filter-option {
+  display: flex;
+  align-items: start;
+  gap: 10px;
+  margin: 20px 0 0;
+}
+.filter-option input {
+  margin: 3px 0 0;
+}
+.filter-help {
+  color: #526962;
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 6px 0 0 23px;
+}
+.search-results {
+  padding-top: 28px;
+}
+.search-results .study-card {
+  margin-top: 20px;
+}
+@media (max-width: 640px) {
+  .search-controls {
+    flex-direction: column;
+  }
+}

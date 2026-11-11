@@ -3,6 +3,22 @@ import type { InterfaceCopy, Language } from './interface-copy'
 import type { Study } from './study-api'
 
 defineProps<{ study: Study; copy: InterfaceCopy; language: Language }>()
+
+function statusText(status: string | null | undefined, copy: InterfaceCopy) {
+  if (!status) return copy.missing
+  const labels: Record<string, string> = {
+    RECRUITING: copy.recruiting,
+    NOT_YET_RECRUITING: copy.notYetRecruiting,
+    ACTIVE_NOT_RECRUITING: copy.activeNotRecruiting,
+    COMPLETED: copy.completed,
+    ENROLLING_BY_INVITATION: copy.invitation,
+    SUSPENDED: copy.suspended,
+    TERMINATED: copy.terminated,
+    WITHDRAWN: copy.withdrawn,
+    UNKNOWN: copy.unknown,
+  }
+  return labels[status] ?? status
+}
 </script>
 
 <template>
@@ -12,16 +28,14 @@ defineProps<{ study: Study; copy: InterfaceCopy; language: Language }>()
         <span class="identifier">{{ study.id }}</span>
         <h3 lang="en">{{ study.title }}</h3>
       </div>
-      <span class="status">{{
-        study.status === 'COMPLETED' ? copy.completed : (study.status ?? copy.missing)
-      }}</span>
+      <span class="status">{{ statusText(study.status, copy) }}</span>
     </div>
     <p class="original">{{ copy.original }}</p>
     <dl class="facts">
       <div>
         <dt>{{ copy.status }}</dt>
         <dd>
-          {{ study.status === 'COMPLETED' ? copy.completed : (study.status ?? copy.missing) }}
+          {{ statusText(study.status, copy) }}
         </dd>
       </div>
       <div>
@@ -39,6 +53,9 @@ defineProps<{ study: Study; copy: InterfaceCopy; language: Language }>()
         <li v-for="(location, index) in study.locations" :key="index">
           {{ location.facility ?? copy.missing
           }}<template v-if="location.city"> · {{ location.city }}</template>
+          <span v-if="'status' in location">
+            — {{ copy.siteStatus }}: {{ statusText(location.status, copy) }}</span
+          >
         </li>
       </ul>
       <p v-else>{{ copy.noLocations }}</p>

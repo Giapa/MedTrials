@@ -40,3 +40,49 @@ describe('example study', () => {
     expect(wrapper.find('article').exists()).toBe(false)
   })
 })
+
+describe('study search', () => {
+  it('searches and shows a Greek location with its own status', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (url: string) => {
+        if (url === '/api/example-study') return { ok: false }
+        return {
+          ok: true,
+          json: async () => ({
+            studies: [
+              {
+                id: 'NCT12345678',
+                title: 'Example search result',
+                summary: null,
+                status: 'RECRUITING',
+                last_updated: null,
+                locations: [
+                  { facility: 'Athens Hospital', city: 'Athens', status: 'NOT_YET_RECRUITING' },
+                ],
+                source_url: 'https://clinicaltrials.gov/study/NCT12345678',
+              },
+            ],
+            more_results: true,
+          }),
+        }
+      }),
+    )
+    const wrapper = mount(App)
+    await flushPromises()
+    await wrapper.get('input[name="condition"]').setValue('breast cancer')
+    await wrapper.get('input[name="openStudiesOnly"]').setValue(true)
+    await wrapper.get('form').trigger('submit')
+    await flushPromises()
+    expect(fetch).toHaveBeenCalledWith(
+      '/api/studies/search',
+      expect.objectContaining({
+        body: JSON.stringify({ condition: 'breast cancer', open_studies_only: true }),
+      }),
+    )
+    expect(wrapper.text()).toContain('Example search result')
+    expect(wrapper.text()).toContain('Athens Hospital')
+    expect(wrapper.text()).toContain('Δεν έχει ξεκινήσει η προσέλκυση')
+    expect(wrapper.text()).toContain('Υπάρχουν περισσότερα αποτελέσματα')
+  })
+})

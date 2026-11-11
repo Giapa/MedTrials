@@ -1,8 +1,10 @@
 # MedTrials
 
-An early portfolio project for finding clinical study information relevant to people in Greece. This first stage displays one real example record from ClinicalTrials.gov. It is not yet a trial search tool.
+An early portfolio project for finding clinical study information relevant to people in Greece. It searches ClinicalTrials.gov for a condition and shows records with a listed location in Greece. It also displays one example record.
 
-The interface is available in Greek and English. The study title and summary are shown in the original English from the registry. The example was completed and is not a recommendation. The registry record can change, and a study's overall status does not tell you whether a particular location is recruiting. This tool provides information, not medical advice; discuss any study with a doctor and the study team.
+The interface is available in Greek and English. Search currently works best with English condition terms; it does not yet interpret Greek descriptions or assess a person's eligibility. Study titles and summaries are shown in the original language from the registry. Search results are not recommendations. The example was completed. Registry records can change, and a study's overall status does not tell you whether a particular location is recruiting. This tool provides information, not medical advice; discuss any study with a doctor and the study team.
+
+The search checks at most the first 10 records returned by the registry, and excludes records without a listed Greek location. The optional recruitment filter uses the overall study status; it does not guarantee that a Greek site is recruiting. The app says when the registry reports more results; those additional records cannot yet be opened in the app. ClinicalTrials.gov does not include every study in Greece. An empty result is not proof that no relevant study exists.
 
 ## Run locally
 
@@ -24,7 +26,7 @@ npm ci
 npm run dev
 ```
 
-Open the local URL printed by Vite. The backend fetches the example directly from ClinicalTrials.gov on each load; it does not store searches. This stage does not ask for personal information. If the registry cannot be reached or returns invalid data, the page shows an error and lets you retry.
+Open the local URL printed by Vite. The backend fetches the example directly from ClinicalTrials.gov on each load. A search sends the entered condition to ClinicalTrials.gov; do not enter names, contact details, or other identifying information. The app does not save searches. If the registry cannot be reached or returns invalid data, the page shows an error instead of claiming there are no results.
 
 ## Checks
 
@@ -45,4 +47,4 @@ npm run lint
 npm run format:check
 ```
 
-These checks do not measure search quality or medical accuracy. A reviewed set of examples and quality measures will be added when search and explanations exist. Cypress is not configured.
+These checks do not measure search quality or medical accuracy. A reviewed set of examples and quality measures will be added in a later stage. Cypress is not configured.
