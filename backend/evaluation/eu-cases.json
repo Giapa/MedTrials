@@ -1,0 +1,47 @@
+{
+  "description": "Fictional condition searches with manually selected CTIS reference records that list Greece. Reference records are not eligibility decisions.",
+  "references": [
+    {
+      "id": "2025-522873-12-00",
+      "title": "Palazestrant in Combination With Ribociclib for the First-line Treatment of ER+/HER2- Advanced Breast Cancer (OPERA-02)",
+      "condition": "ER+, HER2- Advanced Breast Cancer",
+      "source_url": "https://euclinicaltrials.eu/ctis-public/view/2025-522873-12-00",
+      "reason": "The registered condition names breast cancer; Greece is listed among the trial's countries."
+    },
+    {
+      "id": "2026-525472-26-00",
+      "title": "AMBITION 3: A research study investigating how well zenagamtide at higher dose levels lowers blood sugar and body weight compared to semaglutide in people with type 2 diabetes treated with metformin, SGLT2i, or both",
+      "condition": "Participants with type 2 diabetes",
+      "source_url": "https://euclinicaltrials.eu/ctis-public/view/2026-525472-26-00",
+      "reason": "The registered condition names type 2 diabetes; Greece is listed among the trial's countries."
+    },
+    {
+      "id": "2023-509125-41-00",
+      "title": "A study to evaluate the efficacy and safety of three doses of frevecitinib in patients with severe asthma not adequately controlled with medium to high dose ICS/LABA therapy",
+      "condition": "Severe asthma",
+      "source_url": "https://euclinicaltrials.eu/ctis-public/view/2023-509125-41-00",
+      "reason": "The registered condition names asthma; Greece is listed among the trial's countries."
+    },
+    {
+      "id": "2025-525026-35-00",
+      "title": "A trial to evaluate how well trilaciclib works in people with limited-stage small cell lung cancer",
+      "condition": "Limited-stage small cell lung cancer (LS-SCLC)",
+      "source_url": "https://euclinicaltrials.eu/ctis-public/view/2025-525026-35-00",
+      "reason": "The registered condition names small-cell lung cancer; Greece is listed among the trial's countries."
+    },
+    {
+      "id": "2025-522985-60-00",
+      "title": "EORTC-2456-LCG-BTG: A randomized phase II study evaluating upfront SRT to all brain metastases followed by ivonescimab plus chemotherapy versus upfront ivonescimab plus chemotherapy in patients with asymptomatic active brain metastases from NSCLC.",
+      "condition": "Non-small cell lung cancer",
+      "source_url": "https://euclinicaltrials.eu/ctis-public/view/2025-522985-60-00",
+      "reason": "The registered condition is non-small-cell lung cancer, a different subtype from the small-cell query; Greece is listed among the trial's countries."
+    }
+  ],
+  "cases": [
+    {"id":"breast","query":"breast cancer","relevant_id":"2025-522873-12-00","mismatch_ids":[]},
+    {"id":"type-2-diabetes","query":"type 2 diabetes","relevant_id":"2026-525472-26-00","mismatch_ids":[]},
+    {"id":"asthma","query":"asthma","relevant_id":"2023-509125-41-00","mismatch_ids":[]},
+    {"id":"small-cell-lung","query":"small cell lung cancer","relevant_id":"2025-525026-35-00","mismatch_ids":["2025-522985-60-00"]},
+    {"id":"diabetes-sentence","query":"I have type 2 diabetes","relevant_id":"2026-525472-26-00","mismatch_ids":[]}
+  ]
+}

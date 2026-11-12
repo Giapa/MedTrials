@@ -26,7 +26,7 @@ For a valid search, `found` means the selected reference ID appears in the pages
 
 The target hit rate divides `found` by `found + missed` and excludes errors and changed references. It is **not** overall recall, precision, or a measure of eligibility. A miss can mean the chosen record was ranked beyond the checked pages, even if other useful records were returned.
 
-This command evaluates ClinicalTrials.gov only. It does not evaluate the separate European CTIS search or the Greek suggestion step in the website. See the [Greek suggestion evaluation](../../frontend/evaluation/README.md) for that step.
+This command evaluates ClinicalTrials.gov only. It does not evaluate the separate European CTIS search or the Greek suggestion step in the website. See the European evaluation below and the [Greek suggestion evaluation](../../frontend/evaluation/README.md).
 
 The report is printed and optionally saved as JSON, including the case-file hash and UTC time. The command exits with status 1 if any cases have errors or changed references; it exits with status 0 for a completed measurement even when records are missed. Reports should be reviewed rather than used as an automatic safety approval.
 
@@ -49,6 +49,18 @@ The app now makes at most one automatic retry after a 429. When no retry time is
 
 After this change, the [three-page run](rate-limit-2026-11-12.json) on 12 November 2026 at 13:20 Athens time found three references, missed seven, and had no errors. The breast-cancer reference appeared on page three; the diabetes and scleroderma references appeared on page two. The remaining cases included Greek searches and sentence-style searches. A single small run cannot prove that the errors are eliminated or that results are clinically suitable.
 
-## European search check
+## European search evaluation
 
-On 12 November 2026, a live search in the app for `breast cancer` returned 38 CTIS records listing Greece, including [2025-522873-12-00](https://euclinicaltrials.eu/ctis-public/view/2025-522873-12-00) on the first page. The same query and country filter in the CTIS portal showed the same count and first records at that time. This record was selected while building the feature, so this is a working example, not an independent measure of relevance or coverage. Counts and ordering can change. The CTIS search still needs a separately reviewed set of relevant and irrelevant records.
+[eu-cases.json](eu-cases.json) contains five fictional English searches and five public CTIS records. Each reference was checked on 12 November 2026: its title and condition match the values in the file, and Greece is listed among the trial's countries. A listed country does not mean a Greek site is currently recruiting. Four references are selected targets; one record has a different lung-cancer subtype and is marked as a known mismatch for the small-cell query. The references do not determine whether a person can join.
+
+From `backend/`, with dependencies and internet access:
+
+```sh
+uv run python -m backend.eu_evaluation --max-pages 2 --output evaluation/my-eu-results.json
+```
+
+The command checks the current title, condition and Greece listing of each reference, then uses the app's European search endpoint. It checks up to the chosen number of pages, even after finding the target, to look for the specific labelled mismatch. The report includes the returned IDs, first-page target result, pages checked, whether more pages remain, and any labelled mismatches seen. If a reference changes or a request fails, the affected case is excluded from the target hit rate. A failure on a later page is an error, even if the target appeared earlier. The command exits with status 1 on errors or changed references, and 0 for a completed measurement even when a target is missed or a known mismatch appears.
+
+On 12 November 2026, the [two-page run](eu-baseline-2026-11-12.json) found four of five selected targets, all on the first page. The full-sentence search `I have type 2 diabetes` returned no results. The `small cell lung cancer` search returned the selected small-cell target, but also showed the labelled non-small-cell record on the first page. These are different named subtypes; the record must be checked rather than assumed to fit a person's situation. No other results were reviewed for mismatch, so the report cannot establish how many results are relevant or irrelevant.
+
+This is a small development set, not an independent benchmark. Some references were found while building or inspecting the search; two cases use the same diabetes reference. The examples have not been reviewed by a clinician and do not measure eligibility, full recall, overall precision, translation quality, or the Greek website interaction. The raw English query is sent to CTIS through the app and saved in the report. Do not add real patient details. Registry contents, ordering and availability can change; a missing target may be beyond the pages checked.
