@@ -119,22 +119,46 @@ describe('study search', () => {
 
   it('loads more for the submitted search even if the form changes', async () => {
     const study = (id: string, title: string) => ({
-      id, title, summary: null, status: 'RECRUITING', last_updated: null,
-      eligibility: { criteria: null, minimum_age: null, maximum_age: null, sex: null,
-        healthy_volunteers: null, gender_based: null, gender_description: null },
+      id,
+      title,
+      summary: null,
+      status: 'RECRUITING',
+      last_updated: null,
+      eligibility: {
+        criteria: null,
+        minimum_age: null,
+        maximum_age: null,
+        sex: null,
+        healthy_volunteers: null,
+        gender_based: null,
+        gender_description: null,
+      },
       locations: [{ facility: 'Athens', city: 'Athens', status: null }],
       source_url: `https://clinicaltrials.gov/study/${id}`,
     })
+    let pageAttempts = 0
     const fetchMock = vi.fn(async (url: string, options?: RequestInit) => {
       if (url === '/api/example-study') return { ok: false }
       const body = JSON.parse(String(options?.body))
-      if (!body.page_token) return { ok: true, json: async () => ({
-        studies: [study('NCT12345678', 'First study')], more_results: true, next_page_token: 'page-2',
-      }) }
-      return { ok: true, json: async () => ({
-        studies: [study('NCT12345678', 'First study'), study('NCT87654321', 'Second study')],
-        more_results: false, next_page_token: null,
-      }) }
+      if (!body.page_token)
+        return {
+          ok: true,
+          json: async () => ({
+            studies: [study('NCT12345678', 'First study')],
+            more_results: true,
+            next_page_token: 'page-2',
+          }),
+        }
+      pageAttempts += 1
+      if (pageAttempts === 1) return { ok: false }
+      return {
+        ok: true,
+        json: async () => ({
+          studies: [study('NCT12345678', 'First study'), study('NCT87654321', 'Second study')],
+          more_results: false,
+          next_page_token: null,
+        }),
+      }
     })
     vi.stubGlobal('fetch', fetchMock)
     const wrapper = mount(App)
@@ -147,11 +171,93 @@ describe('study search', () => {
     await wrapper.get('input[name="openStudiesOnly"]').setValue(false)
     await wrapper.get('button[name="load-more"]').trigger('click')
     await flushPromises()
-    expect(fetchMock).toHaveBeenCalledWith('/api/studies/search', expect.objectContaining({
-      body: JSON.stringify({ condition: 'breast cancer', open_studies_only: true, page_token: 'page-2' }),
-    }))
+    expect(wrapper.text()).toContain('First study')
+    expect(wrapper.text()).toContain('Τα προηγούμενα αποτελέσματα παραμένουν διαθέσιμα')
+    await wrapper.get('button[name="load-more"]').trigger('click')
+    await flushPromises()
+    expect(fetchMock).toHaveBeenCalledWith(
+      '/api/studies/search',
+      expect.objectContaining({
+        body: JSON.stringify({
+          condition: 'breast cancer',
+          open_studies_only: true,
+          page_token: 'page-2',
+        }),
+      }),
+    )
     expect(wrapper.findAll('.search-results article')).toHaveLength(2)
     expect(wrapper.text()).toContain('Second study')
     expect(wrapper.find('button[name="load-more"]').exists()).toBe(false)
+  })
+
+  it('does not replace a new search with a late page from the old search', async () => {
+    const study = (id: string, title: string) => ({
+      id,
+      title,
+      summary: null,
+      status: null,
+      last_updated: null,
+      eligibility: {
+        criteria: null,
+        minimum_age: null,
+        maximum_age: null,
+        sex: null,
+        healthy_volunteers: null,
+        gender_based: null,
+        gender_description: null,
+      },
+      locations: [],
+      source_url: `https://clinicaltrials.gov/study/${id}`,
+    })
+    let finishPage: (result: { ok: boolean; json: () => Promise<unknown> }) => void = () => {}
+    const delayedPage = new Promise<{ ok: boolean; json: () => Promise<unknown> }>((resolve) => {
+      finishPage = resolve
+    })
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (url: string, options?: RequestInit) => {
+        if (url === '/api/example-study') return { ok: false }
+        const body = JSON.parse(String(options?.body))
+        if (body.page_token) return delayedPage
+        if (body.condition === 'diabetes')
+          return {
+            ok: true,
+            json: async () => ({
+              studies: [study('NCT22222222', 'New search result')],
+              more_results: false,
+              next_page_token: null,
+            }),
+          }
+        return {
+          ok: true,
+          json: async () => ({
+            studies: [study('NCT11111111', 'Old search result')],
+            more_results: true,
+            next_page_token: 'next',
+          }),
+        }
+      }),
+    )
+    const wrapper = mount(App)
+    await flushPromises()
+    await wrapper.get('input[name="condition"]').setValue('breast cancer')
+    await wrapper.get('form').trigger('submit')
+    await flushPromises()
+    await wrapper.get('button[name="load-more"]').trigger('click')
+    await wrapper.get('input[name="condition"]').setValue('diabetes')
+    await wrapper.get('form').trigger('submit')
+    await flushPromises()
+    finishPage({
+      ok: true,
+      json: async () => ({
+        studies: [study('NCT33333333', 'Late result')],
+        more_results: false,
+        next_page_token: null,
+      }),
+    })
+    await flushPromises()
+    expect(wrapper.text()).toContain('New search result')
+    expect(wrapper.text()).not.toContain('Late result')
+    expect(wrapper.text()).not.toContain('Old search result')
   })
 })

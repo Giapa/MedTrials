@@ -58,12 +58,17 @@ export const interfaceCopy = {
       'Το φίλτρο αφορά τη συνολική κατάσταση της μελέτης. Ένα κέντρο στην Ελλάδα μπορεί να έχει διαφορετική κατάσταση.',
     searching: 'Αναζήτηση…',
     results: 'Αποτελέσματα αναζήτησης',
+    resultsFor: 'Αποτελέσματα για',
+    resultsFiltered: 'Φίλτρο συνολικής κατάστασης ενεργό',
     resultsNote:
       'Πιθανώς σχετικές καταχωρίσεις, όχι έλεγχος καταλληλότητας. Η κατάσταση της μελέτης αφορά τη μελέτη συνολικά και μπορεί να διαφέρει ανά κέντρο.',
     empty:
-      'Δεν βρέθηκε επιβεβαιωμένη τοποθεσία στην Ελλάδα στις πρώτες καταχωρίσεις που ελέγχθηκαν. Δοκιμάστε άλλον αγγλικό όρο.',
-    moreResults:
-      'Υπάρχουν περισσότερα αποτελέσματα. Εμφανίζονται έως οι πρώτες 10 καταχωρίσεις από το μητρώο.',
+      'Δεν βρέθηκε καταχώριση με τοποθεσία στην Ελλάδα στα αποτελέσματα που ελέγχθηκαν. Δοκιμάστε άλλον αγγλικό όρο.',
+    moreResults: 'Υπάρχουν περισσότερα αποτελέσματα από το μητρώο.',
+    loadMore: 'Φόρτωση περισσότερων μελετών',
+    loadingMore: 'Φόρτωση περισσότερων μελετών…',
+    moreError:
+      'Δεν ήταν δυνατή η φόρτωση περισσότερων μελετών. Τα προηγούμενα αποτελέσματα παραμένουν διαθέσιμα.',
     searchError: 'Η αναζήτηση δεν ήταν δυνατή. Δοκιμάστε ξανά αργότερα.',
     siteStatus: 'Κατάσταση κέντρου',
     recruiting: 'Προσέλκυση συμμετεχόντων',
@@ -131,11 +136,16 @@ export const interfaceCopy = {
       'This filter uses the overall study status. A site in Greece may have a different status.',
     searching: 'Searching…',
     results: 'Search results',
+    resultsFor: 'Results for',
+    resultsFiltered: 'Overall recruitment filter applied',
     resultsNote:
       'Potentially relevant records, not an eligibility check. The study status is for the overall study and may differ by location.',
     empty:
-      'No confirmed location in Greece was found among the first records checked. Try another English term.',
-    moreResults: 'More results are available. Up to the first 10 registry records are shown.',
+      'No record with a location in Greece was found among the results checked. Try another English term.',
+    moreResults: 'More results are available from the registry.',
+    loadMore: 'Load more studies',
+    loadingMore: 'Loading more studies…',
+    moreError: 'More studies could not be loaded. Previous results are still available.',
     searchError: 'The search could not be completed. Please try again later.',
     siteStatus: 'Site status',
     recruiting: 'Recruiting',

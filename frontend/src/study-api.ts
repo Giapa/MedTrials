@@ -35,14 +35,28 @@ export async function fetchExampleStudy(): Promise<Study> {
   return studySchema.parse(await response.json())
 }
 
-const searchResultsSchema = z.object({ studies: z.array(studySchema), more_results: z.boolean() })
+const searchResultsSchema = z
+  .object({
+    studies: z.array(studySchema),
+    more_results: z.boolean(),
+    next_page_token: z.string().min(1).max(2048).nullable(),
+  })
+  .refine((response) => response.more_results === (response.next_page_token !== null))
 export type SearchResults = z.infer<typeof searchResultsSchema>
 
-export async function searchStudies(condition: string, openStudiesOnly: boolean) {
+export async function searchStudies(
+  condition: string,
+  openStudiesOnly: boolean,
+  pageToken?: string,
+) {
   const response = await fetch('/api/studies/search', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ condition, open_studies_only: openStudiesOnly }),
+    body: JSON.stringify({
+      condition,
+      open_studies_only: openStudiesOnly,
+      ...(pageToken ? { page_token: pageToken } : {}),
+    }),
   })
   if (!response.ok) throw new Error('Registry search failed')
   return searchResultsSchema.parse(await response.json())

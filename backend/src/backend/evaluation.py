@@ -6,10 +6,10 @@ import hashlib
 import json
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Literal
+from typing import Literal, Self
 
 import httpx
-from pydantic import BaseModel, Field, StrictBool, ValidationError
+from pydantic import BaseModel, Field, StrictBool, ValidationError, model_validator
 
 from backend.main import app
 from backend.registry import RegistryStudy
@@ -43,6 +43,13 @@ class ReturnedStudy(BaseModel):
 class SearchResponse(BaseModel):
     studies: list[ReturnedStudy]
     more_results: StrictBool
+    next_page_token: str | None = Field(min_length=1, max_length=2048)
+
+    @model_validator(mode="after")
+    def validate_token(self) -> Self:
+        if self.more_results != bool(self.next_page_token):
+            raise ValueError("Page token does not match more-results flag")
+        return self
 
 
 def score_result(expected_id: str, status_code: int, payload: object) -> dict:
@@ -85,6 +92,69 @@ def summarize_results(results: list[dict]) -> dict:
     }
 
 
+async def search_across_pages(
+    client: httpx.AsyncClient, case: Case, max_pages: int
+) -> dict:
+    ids: list[str] = []
+    seen_tokens: set[str] = set()
+    token: str | None = None
+    first_page_outcome: str | None = None
+    pages_checked = 0
+    for _ in range(max_pages):
+        request_body = {"condition": case.query, "open_studies_only": False}
+        if token is not None:
+            request_body["page_token"] = token
+        try:
+            response = await client.post("/api/studies/search", json=request_body)
+            data = response.json()
+            scored = score_result(case.expected_id, response.status_code, data)
+        except httpx.HTTPError, ValueError:
+            scored = {
+                "outcome": "error",
+                "returned_ids": [],
+                "more_results": None,
+                "http_status": None,
+            }
+        if scored["outcome"] == "error":
+            return {
+                **scored,
+                "returned_ids": ids,
+                "pages_checked": pages_checked,
+                "first_page_outcome": first_page_outcome,
+            }
+        page = SearchResponse.model_validate(data)
+        pages_checked += 1
+        if first_page_outcome is None:
+            first_page_outcome = scored["outcome"]
+        for study_id in scored["returned_ids"]:
+            if study_id not in ids:
+                ids.append(study_id)
+        if scored["outcome"] == "found" or page.next_page_token is None:
+            return {
+                **scored,
+                "returned_ids": ids,
+                "pages_checked": pages_checked,
+                "first_page_outcome": first_page_outcome,
+            }
+        if page.next_page_token in seen_tokens:
+            return {
+                "outcome": "error",
+                "returned_ids": ids,
+                "more_results": None,
+                "http_status": response.status_code,
+                "pages_checked": pages_checked,
+                "first_page_outcome": first_page_outcome,
+            }
+        seen_tokens.add(page.next_page_token)
+        token = page.next_page_token
+    return {
+        **scored,
+        "returned_ids": ids,
+        "pages_checked": pages_checked,
+        "first_page_outcome": first_page_outcome,
+    }
+
+
 def check_reference(
     reference: Reference, status_code: int, payload: object
 ) -> Literal["current", "changed", "error"]:
@@ -109,7 +179,7 @@ def check_reference(
     return "current"
 
 
-async def evaluate(dataset: Cases, dataset_sha256: str) -> dict:
+async def evaluate(dataset: Cases, dataset_sha256: str, max_pages: int = 1) -> dict:
     references = {reference.id: reference for reference in dataset.references}
     if len(references) != len(dataset.references) or len(
         {case.id for case in dataset.cases}
@@ -146,29 +216,24 @@ async def evaluate(dataset: Cases, dataset_sha256: str) -> dict:
                     "returned_ids": [],
                     "more_results": None,
                     "http_status": None,
+                    "pages_checked": 0,
+                    "first_page_outcome": None,
                 }
             else:
-                try:
-                    response = await client.post(
-                        "/api/studies/search",
-                        json={"condition": case.query, "open_studies_only": False},
-                    )
-                    scored = score_result(
-                        case.expected_id, response.status_code, response.json()
-                    )
-                except httpx.HTTPError, ValueError:
-                    scored = {
-                        "outcome": "error",
-                        "returned_ids": [],
-                        "more_results": None,
-                        "http_status": None,
-                    }
+                scored = await search_across_pages(client, case, max_pages)
             results.append({**case.model_dump(), **scored})
 
     return {
         "checked_at_utc": checked_at,
         "dataset_sha256": dataset_sha256,
+        "max_pages": max_pages,
         "summary": summarize_results(results),
+        "first_page_summary": summarize_results(
+            [
+                {"outcome": result["first_page_outcome"] or result["outcome"]}
+                for result in results
+            ]
+        ),
         "reference_status": reference_status,
         "results": results,
     }
@@ -176,14 +241,23 @@ async def evaluate(dataset: Cases, dataset_sha256: str) -> dict:
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Measure whether the first 10 search results contain known reference records."
+        description="Measure whether search results contain known reference records."
     )
     parser.add_argument("--cases", type=Path, default=Path("evaluation/cases.json"))
     parser.add_argument("--output", type=Path, help="Save the report as JSON")
+    parser.add_argument(
+        "--max-pages",
+        type=int,
+        choices=range(1, 11),
+        default=1,
+        help="Maximum registry pages per case (1–10)",
+    )
     args = parser.parse_args()
     case_bytes = args.cases.read_bytes()
     dataset = Cases.model_validate_json(case_bytes)
-    report = asyncio.run(evaluate(dataset, hashlib.sha256(case_bytes).hexdigest()))
+    report = asyncio.run(
+        evaluate(dataset, hashlib.sha256(case_bytes).hexdigest(), args.max_pages)
+    )
     print(json.dumps(report, ensure_ascii=False, indent=2))
     if args.output:
         args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")

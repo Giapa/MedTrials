@@ -14,12 +14,16 @@ class SearchRequest(BaseModel):
         str, StringConstraints(strip_whitespace=True, min_length=1, max_length=120)
     ]
     open_studies_only: StrictBool = False
-    page_token: Annotated[str, StringConstraints(min_length=1, max_length=2048)] | None = None
+    page_token: (
+        Annotated[str, StringConstraints(min_length=1, max_length=2048)] | None
+    ) = None
 
 
 class RegistryResults(BaseModel):
     studies: list[RegistryStudy]
-    nextPageToken: Annotated[str, StringConstraints(min_length=1, max_length=2048)] | None = None
+    nextPageToken: (
+        Annotated[str, StringConstraints(min_length=1, max_length=2048)] | None
+    ) = None
 
 
 @router.post("/api/studies/search")
