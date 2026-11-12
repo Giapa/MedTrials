@@ -6,13 +6,19 @@ type ConditionTerm = {
 
 const terms: ConditionTerm[] = [
   {
-    greek: ['καρκίνος μαστού', 'καρκίνος του μαστού'],
+    greek: ['καρκίνος μαστού', 'καρκίνος του μαστού', 'καρκίνο μαστού', 'καρκίνο του μαστού'],
     english: 'breast cancer',
     sourceUrl:
       'https://www.ema.europa.eu/el/documents/product-information/talzenna-epar-product-information_el.pdf',
   },
   {
-    greek: ['διαβήτης τύπου 2', 'σακχαρώδης διαβήτης τύπου 2'],
+    greek: [
+      'διαβήτης τύπου 2',
+      'διαβήτη τύπου 2',
+      'διαβήτης τύπου δύο',
+      'διαβήτη τύπου δύο',
+      'σακχαρώδης διαβήτης τύπου 2',
+    ],
     english: 'type 2 diabetes',
     sourceUrl:
       'https://www.ema.europa.eu/el/documents/product-information/ifirmasta-epar-product-information_el.pdf',
@@ -27,6 +33,7 @@ const terms: ConditionTerm[] = [
     greek: [
       'μη μικροκυτταρικός καρκίνος πνεύμονα',
       'μη μικροκυτταρικός καρκίνος του πνεύμονα',
+      'μη-μικροκυτταρικός καρκίνος πνεύμονα',
       'μη-μικροκυτταρικός καρκίνος του πνεύμονα',
     ],
     english: 'non-small cell lung cancer',
@@ -37,6 +44,24 @@ const terms: ConditionTerm[] = [
     greek: ['σκληρόδερμα'],
     english: 'scleroderma',
     sourceUrl: 'https://www.orpha.net/pdfs/data/patho/Pro/el/Scleroderma_GR_el_PRO_ORPHA801.pdf',
+  },
+  {
+    greek: ['διαβήτης', 'διαβήτη'],
+    english: 'diabetes',
+    sourceUrl:
+      'https://www.ema.europa.eu/el/documents/product-information/ifirmasta-epar-product-information_el.pdf',
+  },
+  {
+    greek: ['άσθμα'],
+    english: 'asthma',
+    sourceUrl:
+      'https://www.ema.europa.eu/el/documents/product-information/aerivio-spiromax-epar-product-information_el.pdf',
+  },
+  {
+    greek: ['σκλήρυνση κατά πλάκας'],
+    english: 'multiple sclerosis',
+    sourceUrl:
+      'https://www.ema.europa.eu/el/documents/product-information/fampyra-epar-product-information_el.pdf',
   },
 ]
 
@@ -50,5 +75,8 @@ export function hasGreekText(value: string): boolean {
 
 export function findGreekConditionTerm(value: string): ConditionTerm | null {
   const input = normalize(value)
+    .replace(/^εχω /, '')
+    .replace(/\.$/, '')
+    .trimEnd()
   return terms.find((term) => term.greek.some((name) => normalize(name) === input)) ?? null
 }

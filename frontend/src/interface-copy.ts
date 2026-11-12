@@ -52,8 +52,8 @@ export const interfaceCopy = {
     locationsSource: 'Πηγή τοποθεσιών: Contacts and Locations',
     searchTitle: 'Αναζητήστε μελέτες στην Ελλάδα',
     searchIntro:
-      'Αναζητήστε μια πάθηση στο ClinicalTrials.gov με αγγλικό όρο. Μπορούμε επίσης να προτείνουμε αγγλικούς όρους για λίγα συγκεκριμένα ονόματα παθήσεων στα ελληνικά.',
-    condition: 'Όνομα πάθησης',
+      'Αναζητήστε μια πάθηση στο ClinicalTrials.gov με αγγλικό όρο. Για λίγες παθήσεις αναγνωρίζουμε και απλές ελληνικές φράσεις, όπως «Έχω διαβήτη τύπου 2».',
+    condition: 'Πάθηση ή απλή φράση',
     suggestedTerm: 'Προτεινόμενος αγγλικός όρος:',
     chosenFrom: 'Ο όρος επιλέχθηκε για:',
     suggestionLimit:
@@ -63,7 +63,7 @@ export const interfaceCopy = {
     greekUnsupported:
       'Δεν αναγνωρίζουμε αυτό το ελληνικό κείμενο. Χρησιμοποιήστε αγγλικό όρο ή δοκιμάστε τον ευρωπαϊκό χάρτη παρακάτω.',
     greekHelp:
-      'Αναγνωρίζονται μόνο λίγα ακριβή ονόματα παθήσεων, όχι προτάσεις, αρνήσεις ή πρόσθετες λεπτομέρειες.',
+      'Αναγνωρίζονται μόνο λίγα ονόματα παθήσεων και ορισμένες φράσεις που αρχίζουν με «έχω». Δεν αναγνωρίζονται αρνήσεις ή πρόσθετες λεπτομέρειες.',
     mapIntro: 'Για αναζήτηση στα ελληνικά μπορείτε επίσης να επισκεφθείτε τον',
     mapLink: 'ευρωπαϊκό χάρτη κλινικών μελετών του EMA',
     mapPrivacy: 'σε ξεχωριστή σελίδα. Θα χρειαστεί να πληκτρολογήσετε ξανά την αναζήτησή σας.',
@@ -150,8 +150,8 @@ export const interfaceCopy = {
     locationsSource: 'Source for locations: Contacts and Locations',
     searchTitle: 'Search studies in Greece',
     searchIntro:
-      'Search ClinicalTrials.gov using an English condition term. We can also suggest English terms for a few specific Greek condition names.',
-    condition: 'Condition name',
+      'Search ClinicalTrials.gov using an English condition term. For a few conditions we also recognize simple Greek phrases, such as “Έχω διαβήτη τύπου 2”.',
+    condition: 'Condition or simple phrase',
     suggestedTerm: 'Suggested English term:',
     chosenFrom: 'Term selected for:',
     suggestionLimit:
@@ -161,7 +161,7 @@ export const interfaceCopy = {
     greekUnsupported:
       'We do not recognize this Greek text. Use an English term or try the European trial map below.',
     greekHelp:
-      'Only a few exact condition names are recognized, not sentences, negatives, or extra details.',
+      'Only a few condition names and some phrases starting with “έχω” are recognized. Negatives and extra details are not recognized.',
     mapIntro: 'To search in Greek, you can also visit the',
     mapLink: 'EMA European clinical trials map',
     mapPrivacy: 'on a separate page. You will need to enter your search again.',

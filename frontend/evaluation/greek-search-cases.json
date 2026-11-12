@@ -120,5 +120,45 @@
       "source": "diabetes"
     },
     { "id": "unclear", "query": "δεν ξέρω τι πάθηση έχω", "expected": null, "source": null }
+  ],
+  "followup_cases": [
+    {
+      "id": "followup-asthma-phrase",
+      "query": "Έχω άσθμα",
+      "expected": "asthma",
+      "source": "asthma"
+    },
+    { "id": "followup-asthma-upper", "query": "ΑΣΘΜΑ.", "expected": "asthma", "source": "asthma" },
+    {
+      "id": "followup-asthma-sentence",
+      "query": "Πάσχω από άσθμα",
+      "expected": "asthma",
+      "source": "asthma"
+    },
+    {
+      "id": "followup-diabetes-sentence",
+      "query": "Πάσχω από διαβήτη τύπου 2",
+      "expected": "type 2 diabetes",
+      "source": "diabetes"
+    },
+    {
+      "id": "followup-diabetes-punctuation",
+      "query": "Έχω διαβήτη τύπου 2!",
+      "expected": "type 2 diabetes",
+      "source": "diabetes"
+    },
+    {
+      "id": "followup-lung-phrase",
+      "query": "Έχω μη μικροκυτταρικό καρκίνο πνεύμονα",
+      "expected": "non-small cell lung cancer",
+      "source": "non-small-cell"
+    },
+    { "id": "followup-negative", "query": "Δεν έχω άσθμα.", "expected": null, "source": null },
+    {
+      "id": "followup-two-conditions",
+      "query": "Έχω άσθμα και διαβήτη",
+      "expected": null,
+      "source": null
+    }
   ]
 }

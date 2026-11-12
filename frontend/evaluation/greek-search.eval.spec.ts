@@ -8,11 +8,14 @@ import { classifySuggestion } from './greek-score'
 afterEach(() => vi.unstubAllGlobals())
 
 describe('Greek search examples', () => {
-  it('measures suggestions through the search form without a live registry', async () => {
-    expect(new Set(cases.cases.map((example) => example.id)).size).toBe(cases.cases.length)
-    expect(cases.cases.some((example) => example.expected === null)).toBe(true)
-    expect(cases.cases.some((example) => example.expected !== null)).toBe(true)
-    for (const example of cases.cases) {
+  it.each([
+    { name: 'Development', examples: cases.cases },
+    { name: 'Follow-up', examples: cases.followup_cases },
+  ])('measures $name examples through the search form', async ({ name, examples }) => {
+    expect(new Set(examples.map((example) => example.id)).size).toBe(examples.length)
+    expect(examples.some((example) => example.expected === null)).toBe(true)
+    expect(examples.some((example) => example.expected !== null)).toBe(true)
+    for (const example of examples) {
       if (example.expected !== null) expect(Object.keys(cases.sources)).toContain(example.source)
     }
     const outcomes: { id: string; result: ReturnType<typeof classifySuggestion> }[] = []
@@ -25,7 +28,7 @@ describe('Greek search examples', () => {
     })
     vi.stubGlobal('fetch', fetchMock)
 
-    for (const example of cases.cases) {
+    for (const example of examples) {
       fetchMock.mockClear()
       const wrapper = mount(StudySearch, { props: { copy: interfaceCopy.el, language: 'el' } })
       await wrapper.get('input[name="condition"]').setValue(example.query)
@@ -55,13 +58,13 @@ describe('Greek search examples', () => {
       wrapper.unmount()
     }
 
-    const positive = cases.cases.filter((example) => example.expected !== null)
-    const abstain = cases.cases.filter((example) => example.expected === null)
+    const positive = examples.filter((example) => example.expected !== null)
+    const abstain = examples.filter((example) => example.expected === null)
     const ids = (result: 'matched' | 'missed' | 'wrong' | 'unsafe') =>
       outcomes.filter((outcome) => outcome.result === result).map((outcome) => outcome.id)
     const matched = new Set(ids('matched'))
     console.log(
-      `Greek examples: ${positive.filter((example) => matched.has(example.id)).length}/${positive.length} expected suggestions matched.`,
+      `${name}: ${positive.filter((example) => matched.has(example.id)).length}/${positive.length} expected suggestions matched.`,
     )
     console.log(
       `Abstention examples: ${abstain.filter((example) => matched.has(example.id)).length}/${abstain.length} produced no suggestion.`,

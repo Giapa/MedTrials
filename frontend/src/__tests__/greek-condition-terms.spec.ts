@@ -8,6 +8,14 @@ describe('Greek condition suggestions', () => {
     ['μικροκυτταρικός καρκίνος πνεύμονα', 'small cell lung cancer'],
     ['μη μικροκυτταρικός καρκίνος πνεύμονα', 'non-small cell lung cancer'],
     ['σκληρόδερμα', 'scleroderma'],
+    ['Έχω διαβήτη τύπου 2', 'type 2 diabetes'],
+    ['Έχω καρκίνο μαστού', 'breast cancer'],
+    ['διαβήτης τύπου δύο', 'type 2 diabetes'],
+    ['καρκίνος μαστού.', 'breast cancer'],
+    ['μη-μικροκυτταρικός καρκίνος πνεύμονα', 'non-small cell lung cancer'],
+    ['άσθμα', 'asthma'],
+    ['σκλήρυνση κατά πλάκας', 'multiple sclerosis'],
+    ['διαβήτης', 'diabetes'],
   ])('suggests a sourced English term for %s', (input, english) => {
     const suggestion = findGreekConditionTerm(input)
     expect(suggestion?.english).toBe(english)
@@ -16,7 +24,9 @@ describe('Greek condition suggestions', () => {
 
   it.each([
     'Δεν έχω διαβήτη τύπου 2',
-    'Έχω διαβήτη τύπου 2',
+    'Ίσως έχω διαβήτη τύπου 2',
+    'Έχω διαβήτη τύπου 2 και άσθμα',
+    'Δεν έχω άσθμα',
     'καρκίνος μαστού με μεταστάσεις',
     'άγνωστη πάθηση',
   ])('does not guess the meaning of %s', (input) => {
