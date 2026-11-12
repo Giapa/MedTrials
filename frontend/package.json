@@ -10,9 +10,10 @@
     "test:unit": "vitest run",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
-    "format": "oxfmt src/",
-    "lint": "oxlint src",
-    "format:check": "oxfmt --check src/"
+    "format": "oxfmt src/ evaluation/",
+    "lint": "oxlint src evaluation",
+    "format:check": "oxfmt --check src/ evaluation/",
+    "evaluate:greek": "vitest run evaluation/greek-search.eval.spec.ts --reporter=verbose --silent=false"
   },
   "dependencies": {
     "vue": "^3.5.42",

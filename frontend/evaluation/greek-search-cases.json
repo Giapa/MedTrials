@@ -1,0 +1,124 @@
+{
+  "description": "Fictional Greek inputs. An English expected term is a proposed search, not a diagnosis or eligibility decision. Null means do not suggest a single condition term.",
+  "sources": {
+    "breast": "https://www.ema.europa.eu/el/documents/product-information/talzenna-epar-product-information_el.pdf",
+    "diabetes": "https://www.ema.europa.eu/el/documents/product-information/ifirmasta-epar-product-information_el.pdf",
+    "small-cell": "https://www.ema.europa.eu/en/documents/orphan-designation/eu304255-public-summary-positive-opinion-orphan-designation-sabarubicin-treatment-small-cell-lung-cancer_en.pdf",
+    "non-small-cell": "https://www.ema.europa.eu/el/documents/product-information/zirabev-epar-product-information_el.pdf",
+    "scleroderma": "https://www.orpha.net/pdfs/data/patho/Pro/el/Scleroderma_GR_el_PRO_ORPHA801.pdf",
+    "asthma": "https://www.ema.europa.eu/el/documents/product-information/aerivio-spiromax-epar-product-information_el.pdf",
+    "multiple-sclerosis": "https://www.ema.europa.eu/el/documents/product-information/fampyra-epar-product-information_el.pdf"
+  },
+  "cases": [
+    {
+      "id": "breast-name",
+      "query": "καρκίνος μαστού",
+      "expected": "breast cancer",
+      "source": "breast"
+    },
+    {
+      "id": "breast-upper",
+      "query": "ΚΑΡΚΙΝΟΣ ΤΟΥ ΜΑΣΤΟΥ",
+      "expected": "breast cancer",
+      "source": "breast"
+    },
+    {
+      "id": "diabetes-name",
+      "query": "διαβήτης τύπου 2",
+      "expected": "type 2 diabetes",
+      "source": "diabetes"
+    },
+    {
+      "id": "diabetes-space",
+      "query": "  ΣΑΚΧΑΡΩΔΗΣ   ΔΙΑΒΗΤΗΣ ΤΥΠΟΥ 2  ",
+      "expected": "type 2 diabetes",
+      "source": "diabetes"
+    },
+    {
+      "id": "small-cell-name",
+      "query": "μικροκυτταρικός καρκίνος πνεύμονα",
+      "expected": "small cell lung cancer",
+      "source": "small-cell"
+    },
+    {
+      "id": "non-small-cell-name",
+      "query": "μη μικροκυτταρικός καρκίνος πνεύμονα",
+      "expected": "non-small cell lung cancer",
+      "source": "non-small-cell"
+    },
+    {
+      "id": "scleroderma-name",
+      "query": "σκληρόδερμα",
+      "expected": "scleroderma",
+      "source": "scleroderma"
+    },
+    {
+      "id": "breast-punctuation",
+      "query": "καρκίνος μαστού.",
+      "expected": "breast cancer",
+      "source": "breast"
+    },
+    {
+      "id": "diabetes-words",
+      "query": "διαβήτης τύπου δύο",
+      "expected": "type 2 diabetes",
+      "source": "diabetes"
+    },
+    {
+      "id": "diabetes-sentence",
+      "query": "Έχω διαβήτη τύπου 2",
+      "expected": "type 2 diabetes",
+      "source": "diabetes"
+    },
+    {
+      "id": "breast-sentence",
+      "query": "Έχω καρκίνο μαστού",
+      "expected": "breast cancer",
+      "source": "breast"
+    },
+    {
+      "id": "non-small-cell-hyphen",
+      "query": "μη-μικροκυτταρικός καρκίνος πνεύμονα",
+      "expected": "non-small cell lung cancer",
+      "source": "non-small-cell"
+    },
+    { "id": "asthma-name", "query": "άσθμα", "expected": "asthma", "source": "asthma" },
+    {
+      "id": "ms-name",
+      "query": "σκλήρυνση κατά πλάκας",
+      "expected": "multiple sclerosis",
+      "source": "multiple-sclerosis"
+    },
+    {
+      "id": "diabetes-negative",
+      "query": "Δεν έχω διαβήτη τύπου 2",
+      "expected": null,
+      "source": null
+    },
+    {
+      "id": "diabetes-family",
+      "query": "Η μητέρα μου έχει διαβήτη τύπου 2",
+      "expected": null,
+      "source": null
+    },
+    {
+      "id": "breast-extra",
+      "query": "καρκίνος μαστού με μεταστάσεις",
+      "expected": null,
+      "source": null
+    },
+    {
+      "id": "two-conditions",
+      "query": "διαβήτης τύπου 2 και άσθμα",
+      "expected": null,
+      "source": null
+    },
+    {
+      "id": "unspecified-diabetes",
+      "query": "διαβήτης",
+      "expected": "diabetes",
+      "source": "diabetes"
+    },
+    { "id": "unclear", "query": "δεν ξέρω τι πάθηση έχω", "expected": null, "source": null }
+  ]
+}

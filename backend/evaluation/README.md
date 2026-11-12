@@ -8,7 +8,7 @@ This is a small starting set for checking search behavior. It is not a clinical 
 
 A reference record is a potentially relevant result for a condition search, not proof that anyone can join. Some reference studies are completed. All cases search without the optional recruitment filter. One reference per condition was selected for this initial check; many other studies may also be relevant.
 
-The examples were not reviewed by a clinician. They are a small, hand-selected set, and some records had already been seen during development. Paired searches share the same references, so cases are not independent. Greek inputs are exploratory because the current interface asks people to search in English. There are no cases for ranking all relevant studies, deciding whether someone is eligible, explaining rules, privacy, or checking whether an answer is medically correct.
+The examples were not reviewed by a clinician. They are a small, hand-selected set, and some records had already been seen during development. Paired searches share the same references, so cases are not independent. Greek inputs are exploratory: this backend check sends them directly to the registry and does not use the website's Greek term suggestions. There are no cases for ranking all relevant studies, deciding whether someone is eligible, explaining rules, privacy, or checking whether an answer is medically correct.
 
 ## Run
 
