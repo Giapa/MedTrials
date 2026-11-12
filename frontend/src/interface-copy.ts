@@ -48,8 +48,21 @@ export const interfaceCopy = {
     criteriaSource: 'Πηγή: αρχική καταχώριση, ενότητα Participation Criteria',
     searchTitle: 'Αναζητήστε μελέτες στην Ελλάδα',
     searchIntro:
-      'Αναζητήστε μια πάθηση στο ClinicalTrials.gov. Προς το παρόν χρησιμοποιήστε αγγλικούς όρους, όπως “breast cancer”.',
-    condition: 'Πάθηση ή κατάσταση υγείας στα αγγλικά',
+      'Αναζητήστε μια πάθηση στο ClinicalTrials.gov με αγγλικό όρο. Μπορούμε επίσης να προτείνουμε αγγλικούς όρους για λίγα συγκεκριμένα ονόματα παθήσεων στα ελληνικά.',
+    condition: 'Όνομα πάθησης',
+    suggestedTerm: 'Προτεινόμενος αγγλικός όρος:',
+    chosenFrom: 'Ο όρος επιλέχθηκε για:',
+    suggestionLimit:
+      'Ελέγξτε αν ο όρος εκφράζει αυτό που θέλετε να αναζητήσετε. Δεν αποτελεί διάγνωση ή έλεγχο καταλληλότητας.',
+    termSource: 'Πηγή του όρου',
+    useTerm: 'Χρήση του αγγλικού όρου',
+    greekUnsupported:
+      'Δεν αναγνωρίζουμε αυτό το ελληνικό κείμενο. Χρησιμοποιήστε αγγλικό όρο ή δοκιμάστε τον ευρωπαϊκό χάρτη παρακάτω.',
+    greekHelp:
+      'Αναγνωρίζονται μόνο λίγα ακριβή ονόματα παθήσεων, όχι προτάσεις, αρνήσεις ή πρόσθετες λεπτομέρειες.',
+    mapIntro: 'Για αναζήτηση στα ελληνικά μπορείτε επίσης να επισκεφθείτε τον',
+    mapLink: 'ευρωπαϊκό χάρτη κλινικών μελετών του EMA',
+    mapPrivacy: 'σε ξεχωριστή σελίδα. Θα χρειαστεί να πληκτρολογήσετε ξανά την αναζήτησή σας.',
     privacy:
       'Ο όρος αναζήτησης αποστέλλεται στο ClinicalTrials.gov. Μην συμπεριλάβετε όνομα, στοιχεία επικοινωνίας ή άλλες πληροφορίες που σας ταυτοποιούν.',
     searchButton: 'Αναζήτηση μελετών',
@@ -129,8 +142,21 @@ export const interfaceCopy = {
     criteriaSource: 'Source: original record, Participation Criteria section',
     searchTitle: 'Search studies in Greece',
     searchIntro:
-      'Search ClinicalTrials.gov for a condition. For now, use English terms, such as “breast cancer”.',
-    condition: 'Condition or health situation in English',
+      'Search ClinicalTrials.gov using an English condition term. We can also suggest English terms for a few specific Greek condition names.',
+    condition: 'Condition name',
+    suggestedTerm: 'Suggested English term:',
+    chosenFrom: 'Term selected for:',
+    suggestionLimit:
+      'Check that this term describes what you want to search for. It is not a diagnosis or an eligibility check.',
+    termSource: 'Source for this term',
+    useTerm: 'Use the English term',
+    greekUnsupported:
+      'We do not recognize this Greek text. Use an English term or try the European trial map below.',
+    greekHelp:
+      'Only a few exact condition names are recognized, not sentences, negatives, or extra details.',
+    mapIntro: 'To search in Greek, you can also visit the',
+    mapLink: 'EMA European clinical trials map',
+    mapPrivacy: 'on a separate page. You will need to enter your search again.',
     privacy:
       'The search term is sent to ClinicalTrials.gov. Do not include your name, contact details, or other identifying information.',
     searchButton: 'Search studies',

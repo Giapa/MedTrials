@@ -1,12 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import StudyCard from './StudyCard.vue'
+import { findGreekConditionTerm, hasGreekText } from './greek-condition-terms'
 import type { InterfaceCopy, Language } from './interface-copy'
 import { RegistryBusyError, searchStudies, type SearchResults } from './study-api'
 
 defineProps<{ copy: InterfaceCopy; language: Language }>()
 
 const condition = ref('')
+const containsGreek = computed(() => hasGreekText(condition.value))
+const suggestion = computed(() => findGreekConditionTerm(condition.value))
+const chosenTerm = ref<{ greek: string; sourceUrl: string } | null>(null)
 const openStudiesOnly = ref(false)
 const state = ref<
   | { kind: 'idle' }
@@ -23,9 +27,15 @@ const state = ref<
 >({ kind: 'idle' })
 let searchVersion = 0
 
+function useSuggestion() {
+  if (!suggestion.value) return
+  chosenTerm.value = { greek: condition.value.trim(), sourceUrl: suggestion.value.sourceUrl }
+  condition.value = suggestion.value.english
+}
+
 async function search() {
   const term = condition.value.trim()
-  if (!term || state.value.kind === 'loading') return
+  if (!term || containsGreek.value || state.value.kind === 'loading') return
   const openOnly = openStudiesOnly.value
   const version = ++searchVersion
   state.value = { kind: 'loading' }
@@ -96,11 +106,47 @@ async function loadMore() {
           maxlength="120"
           required
           autocomplete="off"
+          @input="chosenTerm = null"
         />
-        <button type="submit" :disabled="state.kind === 'loading' || !condition.trim()">
+        <button
+          type="submit"
+          :disabled="state.kind === 'loading' || !condition.trim() || containsGreek"
+        >
           {{ state.kind === 'loading' ? copy.searching : copy.searchButton }}
         </button>
       </div>
+      <div v-if="containsGreek" aria-live="polite" class="greek-help">
+        <div v-if="suggestion" class="term-suggestion">
+          <p>
+            {{ copy.suggestedTerm }} <strong lang="en">{{ suggestion.english }}</strong>
+          </p>
+          <p>{{ copy.suggestionLimit }}</p>
+          <a :href="suggestion.sourceUrl" target="_blank" rel="noopener noreferrer">{{
+            copy.termSource
+          }}</a>
+          <button class="retry" name="use-suggested-term" type="button" @click="useSuggestion">
+            {{ copy.useTerm }}
+          </button>
+        </div>
+        <p v-else>{{ copy.greekUnsupported }}</p>
+        <p>{{ copy.greekHelp }}</p>
+      </div>
+      <p v-if="chosenTerm" class="chosen-term">
+        {{ copy.chosenFrom }} <strong>{{ chosenTerm.greek }}</strong> ·
+        <a :href="chosenTerm.sourceUrl" target="_blank" rel="noopener noreferrer">{{
+          copy.termSource
+        }}</a>
+      </p>
+      <p class="registry-alternative">
+        {{ copy.mapIntro }}
+        <a
+          href="https://trialmap.ema.europa.eu/?language=el"
+          target="_blank"
+          rel="noopener noreferrer"
+          >{{ copy.mapLink }}</a
+        >
+        {{ copy.mapPrivacy }}
+      </p>
       <label class="filter-option">
         <input v-model="openStudiesOnly" name="openStudiesOnly" type="checkbox" />
         {{ copy.openOnly }}

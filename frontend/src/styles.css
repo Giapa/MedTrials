@@ -349,6 +349,22 @@ a:focus-visible {
   line-height: 1.5;
   margin-bottom: 0;
 }
+.greek-help,
+.chosen-term,
+.registry-alternative {
+  color: #526962;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.term-suggestion {
+  border-left: 3px solid #398467;
+  margin-top: 16px;
+  padding-left: 16px;
+}
+.term-suggestion .retry {
+  display: block;
+  margin-top: 12px;
+}
 .search-form .filter-option {
   display: flex;
   align-items: start;

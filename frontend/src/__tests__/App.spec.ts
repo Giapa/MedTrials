@@ -289,3 +289,52 @@ describe('study search', () => {
     expect(wrapper.text()).not.toContain('Old search result')
   })
 })
+
+describe('Greek search suggestions', () => {
+  it('requires the user to choose a sourced suggestion before searching', async () => {
+    const fetchMock = vi.fn(async (url: string) => {
+      if (url === '/api/example-study') return { ok: false }
+      return {
+        ok: true,
+        json: async () => ({ studies: [], more_results: false, next_page_token: null }),
+      }
+    })
+    vi.stubGlobal('fetch', fetchMock)
+    const wrapper = mount(App)
+    await flushPromises()
+    await wrapper.get('input[name="condition"]').setValue('καρκίνος μαστού')
+    expect(wrapper.get('button[type="submit"]').attributes('disabled')).toBeDefined()
+    expect(wrapper.get('.term-suggestion').text()).toContain('breast cancer')
+    expect(wrapper.get('.term-suggestion a').attributes('href')).toMatch(/^https:\/\//)
+    await wrapper.get('form').trigger('submit')
+    expect(fetchMock).not.toHaveBeenCalledWith('/api/studies/search', expect.anything())
+    await wrapper.get('button[name="use-suggested-term"]').trigger('click')
+    expect((wrapper.get('input[name="condition"]').element as HTMLInputElement).value).toBe(
+      'breast cancer',
+    )
+    expect(wrapper.get('.chosen-term').text()).toContain('καρκίνος μαστού')
+    expect(wrapper.get('.chosen-term a').attributes('href')).toMatch(/^https:\/\//)
+    await wrapper.get('form').trigger('submit')
+    await flushPromises()
+    expect(fetchMock).toHaveBeenCalledWith(
+      '/api/studies/search',
+      expect.objectContaining({
+        body: JSON.stringify({ condition: 'breast cancer', open_studies_only: false }),
+      }),
+    )
+    await wrapper.get('input[name="condition"]').setValue('diabetes')
+    expect(wrapper.find('.chosen-term').exists()).toBe(false)
+  })
+
+  it('does not suggest or submit an unsupported Greek sentence', async () => {
+    const fetchMock = vi.fn().mockResolvedValue({ ok: false })
+    vi.stubGlobal('fetch', fetchMock)
+    const wrapper = mount(App)
+    await flushPromises()
+    await wrapper.get('input[name="condition"]').setValue('Δεν έχω διαβήτη τύπου 2')
+    expect(wrapper.find('.term-suggestion').exists()).toBe(false)
+    expect(wrapper.get('button[type="submit"]').attributes('disabled')).toBeDefined()
+    await wrapper.get('form').trigger('submit')
+    expect(fetchMock).not.toHaveBeenCalledWith('/api/studies/search', expect.anything())
+  })
+})
