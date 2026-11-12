@@ -1,6 +1,10 @@
+from datetime import UTC, datetime, timedelta
+from email.utils import format_datetime
+
 import httpx
 from fastapi.testclient import TestClient
 
+from backend import registry
 from backend.main import app, registry_client
 
 
@@ -226,3 +230,109 @@ def test_next_page_uses_the_original_search_and_registry_token():
         app.dependency_overrides.clear()
     assert response.status_code == 200
     assert response.json()["next_page_token"] is None
+
+
+def test_rate_limit_without_retry_header_recovers_after_one_pause(monkeypatch):
+    attempts = 0
+    waits = []
+
+    def reply(request):
+        nonlocal attempts
+        attempts += 1
+        if attempts == 1:
+            return httpx.Response(429)
+        return httpx.Response(200, json={"studies": []})
+
+    async def fake_wait(seconds):
+        waits.append(seconds)
+
+    async def mock_client():
+        async with httpx.AsyncClient(transport=httpx.MockTransport(reply)) as client:
+            yield client
+
+    monkeypatch.setattr(registry.asyncio, "sleep", fake_wait)
+    app.dependency_overrides[registry_client] = mock_client
+    try:
+        response = TestClient(app).post(
+            "/api/studies/search", json={"condition": "diabetes"}
+        )
+    finally:
+        app.dependency_overrides.clear()
+    assert response.status_code == 200
+    assert attempts == 2
+    assert waits == [10]
+
+
+def test_persistent_rate_limit_is_reported_without_unbounded_retries(monkeypatch):
+    attempts = 0
+    waits = []
+
+    def reply(request):
+        nonlocal attempts
+        attempts += 1
+        return httpx.Response(429, headers={"Retry-After": "0"})
+
+    async def fake_wait(seconds):
+        waits.append(seconds)
+
+    async def mock_client():
+        async with httpx.AsyncClient(transport=httpx.MockTransport(reply)) as client:
+            yield client
+
+    monkeypatch.setattr(registry.asyncio, "sleep", fake_wait)
+    app.dependency_overrides[registry_client] = mock_client
+    try:
+        response = TestClient(app).post(
+            "/api/studies/search", json={"condition": "diabetes"}
+        )
+    finally:
+        app.dependency_overrides.clear()
+    assert response.status_code == 429
+    assert attempts == 2
+    assert waits == [0]
+
+
+def test_long_retry_after_is_not_shortened(monkeypatch):
+    attempts = 0
+
+    def reply(request):
+        nonlocal attempts
+        attempts += 1
+        return httpx.Response(429, headers={"Retry-After": "120"})
+
+    async def fake_wait(seconds):
+        raise AssertionError("Should not retry before requested delay")
+
+    async def mock_client():
+        async with httpx.AsyncClient(transport=httpx.MockTransport(reply)) as client:
+            yield client
+
+    monkeypatch.setattr(registry.asyncio, "sleep", fake_wait)
+    app.dependency_overrides[registry_client] = mock_client
+    try:
+        response = TestClient(app).post(
+            "/api/studies/search", json={"condition": "diabetes"}
+        )
+    finally:
+        app.dependency_overrides.clear()
+    assert response.status_code == 429
+    assert attempts == 1
+
+
+def test_retry_after_date_and_malformed_values_are_handled_safely():
+    now = datetime(2026, 11, 12, 12, 0, tzinfo=UTC)
+    assert registry.retry_delay(None, now) == 10
+    assert registry.retry_delay("0", now) == 0
+    assert (
+        registry.retry_delay(
+            format_datetime(now + timedelta(seconds=5), usegmt=True), now
+        )
+        == 5
+    )
+    assert (
+        registry.retry_delay(
+            format_datetime(now + timedelta(seconds=15), usegmt=True), now
+        )
+        is None
+    )
+    assert registry.retry_delay("not-a-date", now) is None

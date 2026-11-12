@@ -70,6 +70,9 @@ export const interfaceCopy = {
     moreError:
       'Δεν ήταν δυνατή η φόρτωση περισσότερων μελετών. Τα προηγούμενα αποτελέσματα παραμένουν διαθέσιμα.',
     searchError: 'Η αναζήτηση δεν ήταν δυνατή. Δοκιμάστε ξανά αργότερα.',
+    registryBusy: 'Η σύνδεση με το μητρώο είναι απασχολημένη. Περιμένετε και προσπαθήστε ξανά.',
+    moreBusy:
+      'Η σύνδεση με το μητρώο είναι απασχολημένη. Τα προηγούμενα αποτελέσματα παραμένουν διαθέσιμα. Περιμένετε και προσπαθήστε ξανά.',
     siteStatus: 'Κατάσταση κέντρου',
     recruiting: 'Προσέλκυση συμμετεχόντων',
     notYetRecruiting: 'Δεν έχει ξεκινήσει η προσέλκυση',
@@ -147,6 +150,9 @@ export const interfaceCopy = {
     loadingMore: 'Loading more studies…',
     moreError: 'More studies could not be loaded. Previous results are still available.',
     searchError: 'The search could not be completed. Please try again later.',
+    registryBusy: 'The registry connection is busy. Please wait and try again.',
+    moreBusy:
+      'The registry connection is busy. Previous results are still available. Please wait and try again.',
     siteStatus: 'Site status',
     recruiting: 'Recruiting',
     notYetRecruiting: 'Not yet recruiting',

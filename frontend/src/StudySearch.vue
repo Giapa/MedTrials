@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import StudyCard from './StudyCard.vue'
 import type { InterfaceCopy, Language } from './interface-copy'
-import { searchStudies, type SearchResults } from './study-api'
+import { RegistryBusyError, searchStudies, type SearchResults } from './study-api'
 
 defineProps<{ copy: InterfaceCopy; language: Language }>()
 
@@ -11,14 +11,14 @@ const openStudiesOnly = ref(false)
 const state = ref<
   | { kind: 'idle' }
   | { kind: 'loading' }
-  | { kind: 'error' }
+  | { kind: 'error'; busy: boolean }
   | {
       kind: 'results'
       results: SearchResults
       term: string
       openOnly: boolean
       loadingMore: boolean
-      moreError: boolean
+      moreError: 'busy' | 'generic' | null
     }
 >({ kind: 'idle' })
 let searchVersion = 0
@@ -38,10 +38,11 @@ async function search() {
         term,
         openOnly,
         loadingMore: false,
-        moreError: false,
+        moreError: null,
       }
-  } catch {
-    if (version === searchVersion) state.value = { kind: 'error' }
+  } catch (reason) {
+    if (version === searchVersion)
+      state.value = { kind: 'error', busy: reason instanceof RegistryBusyError }
   }
 }
 
@@ -50,7 +51,7 @@ async function loadMore() {
   if (current.kind !== 'results' || current.loadingMore || !current.results.next_page_token) return
   const token = current.results.next_page_token
   const version = searchVersion
-  state.value = { ...current, loadingMore: true, moreError: false }
+  state.value = { ...current, loadingMore: true, moreError: null }
   try {
     const next = await searchStudies(current.term, current.openOnly, token)
     if (next.next_page_token === token) throw new Error('Repeated registry page token')
@@ -67,10 +68,15 @@ async function loadMore() {
       ...current,
       results: { ...next, studies },
       loadingMore: false,
-      moreError: false,
+      moreError: null,
     }
-  } catch {
-    if (version === searchVersion) state.value = { ...current, loadingMore: false, moreError: true }
+  } catch (reason) {
+    if (version === searchVersion)
+      state.value = {
+        ...current,
+        loadingMore: false,
+        moreError: reason instanceof RegistryBusyError ? 'busy' : 'generic',
+      }
   }
 }
 </script>
@@ -103,7 +109,9 @@ async function loadMore() {
       <p class="search-privacy">{{ copy.privacy }}</p>
     </form>
     <div aria-live="polite">
-      <p v-if="state.kind === 'error'" class="message" role="alert">{{ copy.searchError }}</p>
+      <p v-if="state.kind === 'error'" class="message" role="alert">
+        {{ state.busy ? copy.registryBusy : copy.searchError }}
+      </p>
       <div v-else-if="state.kind === 'results'" class="search-results">
         <h3>{{ copy.results }}</h3>
         <p>
@@ -120,7 +128,9 @@ async function loadMore() {
           :copy="copy"
           :language="language"
         />
-        <p v-if="state.moreError" role="alert">{{ copy.moreError }}</p>
+        <p v-if="state.moreError" role="alert">
+          {{ state.moreError === 'busy' ? copy.moreBusy : copy.moreError }}
+        </p>
         <button
           v-if="state.results.more_results"
           class="retry"

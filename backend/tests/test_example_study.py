@@ -86,3 +86,19 @@ def test_invalid_registry_record_is_not_displayed():
         app.dependency_overrides.clear()
 
     assert response.status_code == 502
+
+
+def test_example_reports_registry_rate_limit():
+    async def mock_client():
+        transport = httpx.MockTransport(
+            lambda request: httpx.Response(429, headers={"Retry-After": "120"})
+        )
+        async with httpx.AsyncClient(transport=transport) as client:
+            yield client
+
+    app.dependency_overrides[registry_client] = mock_client
+    try:
+        response = TestClient(app).get("/api/example-study")
+    finally:
+        app.dependency_overrides.clear()
+    assert response.status_code == 429

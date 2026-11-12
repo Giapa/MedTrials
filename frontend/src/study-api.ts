@@ -29,9 +29,16 @@ const studySchema = z
 
 export type Study = z.infer<typeof studySchema>
 
+export class RegistryBusyError extends Error {}
+
+function ensureAvailable(response: Response) {
+  if (response.status === 429) throw new RegistryBusyError('Registry connection is busy')
+  if (!response.ok) throw new Error('Registry request failed')
+}
+
 export async function fetchExampleStudy(): Promise<Study> {
   const response = await fetch('/api/example-study')
-  if (!response.ok) throw new Error('Registry request failed')
+  ensureAvailable(response)
   return studySchema.parse(await response.json())
 }
 
@@ -58,6 +65,6 @@ export async function searchStudies(
       ...(pageToken ? { page_token: pageToken } : {}),
     }),
   })
-  if (!response.ok) throw new Error('Registry search failed')
+  ensureAvailable(response)
   return searchResultsSchema.parse(await response.json())
 }

@@ -28,6 +28,8 @@ npm run dev
 
 Open the local URL printed by Vite. The backend fetches the example directly from ClinicalTrials.gov on each load. A search sends the entered condition to ClinicalTrials.gov; do not enter names, contact details, or other identifying information. The app does not save searches. If the registry cannot be reached or returns invalid data, the page shows an error instead of claiming there are no results.
 
+If the registry connection responds that it is receiving too many requests, the app retries once. It waits ten seconds when no retry time is supplied; if a valid retry time is supplied, it waits for that time only when it is at most ten seconds. Otherwise it does not retry automatically. If the limit persists, the page says the connection is busy. Previously loaded results stay visible. This does not guarantee availability when traffic is high.
+
 ## Checks
 
 In `backend/`:

@@ -4,7 +4,7 @@ import httpx
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, StrictBool, StringConstraints, ValidationError
 
-from backend.registry import RegistryStudy, registry_client
+from backend.registry import RegistryStudy, get_registry, registry_client
 
 router = APIRouter()
 
@@ -42,9 +42,11 @@ async def search_studies(
             params["filter.overallStatus"] = "RECRUITING,NOT_YET_RECRUITING"
         if query.page_token is not None:
             params["pageToken"] = query.page_token
-        response = await client.get(
-            "https://clinicaltrials.gov/api/v2/studies", params=params
+        response = await get_registry(
+            client, "https://clinicaltrials.gov/api/v2/studies", params=params
         )
+        if response.status_code == 429:
+            raise HTTPException(status_code=429, detail="Registry connection is busy")
         response.raise_for_status()
         registry_results = RegistryResults.model_validate(response.json())
         studies = []

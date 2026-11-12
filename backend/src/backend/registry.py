@@ -1,4 +1,7 @@
+import asyncio
 from collections.abc import AsyncIterator
+from datetime import UTC, datetime
+from email.utils import parsedate_to_datetime
 
 import httpx
 from pydantic import BaseModel, Field, StrictBool
@@ -59,6 +62,38 @@ class Protocol(BaseModel):
 
 class RegistryStudy(BaseModel):
     protocolSection: Protocol
+
+
+def retry_delay(header: str | None, now: datetime) -> float | None:
+    if header is None:
+        return 10
+    if len(header) > 128:
+        return None
+    value = header.strip()
+    if value.isascii() and value.isdigit():
+        delay = float(int(value))
+    else:
+        try:
+            retry_at = parsedate_to_datetime(value)
+            if retry_at.tzinfo is None:
+                retry_at = retry_at.replace(tzinfo=UTC)
+            delay = max(0.0, (retry_at - now).total_seconds())
+        except TypeError, ValueError, OverflowError:
+            return None
+    return delay if delay <= 10 else None
+
+
+async def get_registry(
+    client: httpx.AsyncClient, url: str, *, params: dict[str, str] | None = None
+) -> httpx.Response:
+    response = await client.get(url, params=params)
+    if response.status_code != 429:
+        return response
+    delay = retry_delay(response.headers.get("Retry-After"), datetime.now(UTC))
+    if delay is None:
+        return response
+    await asyncio.sleep(delay)
+    return await client.get(url, params=params)
 
 
 async def registry_client() -> AsyncIterator[httpx.AsyncClient]:

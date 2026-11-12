@@ -59,9 +59,36 @@ describe('example study', () => {
     expect(wrapper.get('[role="alert"]').text()).toContain('Δεν ήταν δυνατή')
     expect(wrapper.find('article').exists()).toBe(false)
   })
+
+  it('says when the example record is rate limited', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false, status: 429 }))
+    const wrapper = mount(App)
+    await flushPromises()
+    expect(wrapper.get('.study-section [role="alert"]').text()).toContain(
+      'Η σύνδεση με το μητρώο είναι απασχολημένη',
+    )
+  })
 })
 
 describe('study search', () => {
+  it('says when a new search is rate limited', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (url: string) =>
+        url === '/api/example-study' ? { ok: false } : { ok: false, status: 429 },
+      ),
+    )
+    const wrapper = mount(App)
+    await flushPromises()
+    await wrapper.get('input[name="condition"]').setValue('diabetes')
+    await wrapper.get('form').trigger('submit')
+    await flushPromises()
+    expect(wrapper.get('.search-section [role="alert"]').text()).toContain(
+      'Η σύνδεση με το μητρώο είναι απασχολημένη',
+    )
+    expect(wrapper.find('.search-results').exists()).toBe(false)
+  })
+
   it('searches and shows a Greek location with its own status', async () => {
     vi.stubGlobal(
       'fetch',
@@ -150,7 +177,7 @@ describe('study search', () => {
           }),
         }
       pageAttempts += 1
-      if (pageAttempts === 1) return { ok: false }
+      if (pageAttempts === 1) return { ok: false, status: 429 }
       return {
         ok: true,
         json: async () => ({
@@ -172,6 +199,7 @@ describe('study search', () => {
     await wrapper.get('button[name="load-more"]').trigger('click')
     await flushPromises()
     expect(wrapper.text()).toContain('First study')
+    expect(wrapper.text()).toContain('Η σύνδεση με το μητρώο είναι απασχολημένη')
     expect(wrapper.text()).toContain('Τα προηγούμενα αποτελέσματα παραμένουν διαθέσιμα')
     await wrapper.get('button[name="load-more"]').trigger('click')
     await flushPromises()

@@ -3,22 +3,22 @@ import { computed, onMounted, ref, watch } from 'vue'
 import StudyCard from './StudyCard.vue'
 import StudySearch from './StudySearch.vue'
 import { interfaceCopy, type Language } from './interface-copy'
-import { fetchExampleStudy, type Study } from './study-api'
+import { fetchExampleStudy, RegistryBusyError, type Study } from './study-api'
 
 const language = ref<Language>('el')
 const study = ref<Study | null>(null)
 const loading = ref(true)
-const error = ref(false)
+const error = ref<'busy' | 'generic' | null>(null)
 const copy = computed(() => interfaceCopy[language.value])
 
 async function loadStudy() {
   loading.value = true
-  error.value = false
+  error.value = null
   try {
     study.value = await fetchExampleStudy()
-  } catch {
+  } catch (reason) {
     study.value = null
-    error.value = true
+    error.value = reason instanceof RegistryBusyError ? 'busy' : 'generic'
   } finally {
     loading.value = false
   }
@@ -62,7 +62,7 @@ onMounted(loadStudy)
       </div>
       <div v-if="loading" class="message">{{ copy.loading }}</div>
       <div v-else-if="error" class="message" role="alert">
-        <p>{{ copy.error }}</p>
+        <p>{{ error === 'busy' ? copy.registryBusy : copy.error }}</p>
         <button class="retry" @click="loadStudy">{{ copy.retry }}</button>
       </div>
       <StudyCard v-else-if="study" :study="study" :copy="copy" :language="language" />

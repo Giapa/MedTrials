@@ -4,7 +4,7 @@ import httpx
 from fastapi import Depends, FastAPI, HTTPException
 from pydantic import ValidationError
 
-from backend.registry import RegistryStudy, registry_client
+from backend.registry import RegistryStudy, get_registry, registry_client
 from backend.search import router as search_router
 
 app = FastAPI()
@@ -15,9 +15,11 @@ EXAMPLE_ID = "NCT02798055"
 @app.get("/api/example-study")
 async def example_study(client: Annotated[httpx.AsyncClient, Depends(registry_client)]):
     try:
-        response = await client.get(
-            f"https://clinicaltrials.gov/api/v2/studies/{EXAMPLE_ID}"
+        response = await get_registry(
+            client, f"https://clinicaltrials.gov/api/v2/studies/{EXAMPLE_ID}"
         )
+        if response.status_code == 429:
+            raise HTTPException(status_code=429, detail="Registry connection is busy")
         response.raise_for_status()
         study = RegistryStudy.model_validate(response.json()).protocolSection
         if study.identificationModule.nctId != EXAMPLE_ID:

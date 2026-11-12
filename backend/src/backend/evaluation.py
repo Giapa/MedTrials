@@ -12,7 +12,7 @@ import httpx
 from pydantic import BaseModel, Field, StrictBool, ValidationError, model_validator
 
 from backend.main import app
-from backend.registry import RegistryStudy
+from backend.registry import RegistryStudy, get_registry
 
 
 class Reference(BaseModel):
@@ -193,8 +193,9 @@ async def evaluate(dataset: Cases, dataset_sha256: str, max_pages: int = 1) -> d
         reference_status = {}
         for reference in dataset.references:
             try:
-                response = await registry.get(
-                    f"https://clinicaltrials.gov/api/v2/studies/{reference.id}"
+                response = await get_registry(
+                    registry,
+                    f"https://clinicaltrials.gov/api/v2/studies/{reference.id}",
                 )
                 reference_status[reference.id] = check_reference(
                     reference, response.status_code, response.json()
