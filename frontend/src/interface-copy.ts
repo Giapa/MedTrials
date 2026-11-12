@@ -51,14 +51,26 @@ export const interfaceCopy = {
     summarySource: 'Πηγή σύνοψης: Study Overview',
     locationsSource: 'Πηγή τοποθεσιών: Contacts and Locations',
     searchTitle: 'Αναζητήστε μελέτες στην Ελλάδα',
-    euTitle: 'Αναζητήστε ευρωπαϊκή μελέτη με αριθμό',
+    euTitle: 'Ευρωπαϊκές μελέτες στην Ελλάδα',
     euIntro:
-      'Αν γνωρίζετε τον ευρωπαϊκό αριθμό μιας μελέτης (EUCT), μπορείτε να δείτε τα στοιχεία της από το CTIS.',
+      'Αναζητήστε στοιχεία από το ευρωπαϊκό μητρώο CTIS. Η αναζήτηση δεν ελέγχει αν μπορείτε να συμμετάσχετε.',
+    euLookupTitle: 'Αναζήτηση με ευρωπαϊκό αριθμό',
+    euSearchTitle: 'Αναζήτηση με πάθηση',
+    euSearchIntro:
+      'Αναζητήστε με αγγλικό όρο ή επιλέξτε μία από τις λίγες διαθέσιμες προτάσεις για ελληνικό κείμενο.',
+    euSearchPrivacy:
+      'Ο όρος αποστέλλεται στο ευρωπαϊκό μητρώο CTIS. Μην συμπεριλάβετε όνομα, στοιχεία επικοινωνίας ή άλλα στοιχεία που σας ταυτοποιούν.',
+    euSearchNote:
+      'Πιθανώς σχετικές καταχωρίσεις με την Ελλάδα στις χώρες της μελέτης, όχι έλεγχος καταλληλότητας. Ο τίτλος και η πάθηση εμφανίζονται όπως παρέχονται από το μητρώο, συνήθως στα αγγλικά. Ελέγξτε στην καταχώριση την κατάσταση κάθε κέντρου.',
+    euTotal: 'Αποτελέσματα στο CTIS',
+    euEmpty: 'Δεν βρέθηκαν αποτελέσματα. Αυτό δεν αποδεικνύει ότι δεν υπάρχει σχετική μελέτη.',
+    euViewCriteria: 'Προβολή κύριων κριτηρίων',
+    euMoreBusy:
+      'Το ευρωπαϊκό μητρώο είναι απασχολημένο. Τα προηγούμενα αποτελέσματα παραμένουν διαθέσιμα.',
     euNumber: 'Ευρωπαϊκός αριθμός μελέτης',
     euExample: '2025-522873-12-00',
     euButton: 'Εύρεση μελέτης',
-    euHelp:
-      'Για αναζήτηση με πάθηση, χρησιμοποιήστε τον ευρωπαϊκό χάρτη παραπάνω. Η αναζήτηση με αριθμό δεν ελέγχει αν μπορείτε να συμμετάσχετε.',
+    euHelp: 'Εισαγάγετε τον αριθμό EUCT που αναφέρεται στην ευρωπαϊκή καταχώριση.',
     euInvalid: 'Εισαγάγετε αριθμό με τη μορφή 2025-522873-12-00.',
     euNotFound:
       'Δεν βρέθηκε μελέτη με αυτόν τον αριθμό που να αναφέρει την Ελλάδα. Ελέγξτε την αρχική καταχώριση στο CTIS.',
@@ -172,13 +184,24 @@ export const interfaceCopy = {
     summarySource: 'Source for summary: Study Overview',
     locationsSource: 'Source for locations: Contacts and Locations',
     searchTitle: 'Search studies in Greece',
-    euTitle: 'Look up a European study by number',
-    euIntro: 'If you know a European trial number (EUCT), you can view its information from CTIS.',
+    euTitle: 'European studies in Greece',
+    euIntro: 'Search the European CTIS registry. This is not an eligibility check.',
+    euLookupTitle: 'Look up by European trial number',
+    euSearchTitle: 'Search by condition',
+    euSearchIntro:
+      'Search with an English term or choose one of the limited suggestions for Greek text.',
+    euSearchPrivacy:
+      'The search term is sent to the European CTIS registry. Do not include your name, contact details, or other identifying information.',
+    euSearchNote:
+      'Potentially relevant records listing Greece among their countries, not an eligibility check. Titles and conditions are shown as provided by the registry, usually in English. Check the record for the status of each site.',
+    euTotal: 'CTIS results',
+    euEmpty: 'No results were found. This does not prove that no relevant study exists.',
+    euViewCriteria: 'View main criteria',
+    euMoreBusy: 'The European registry is busy. Previous results remain available.',
     euNumber: 'European trial number',
     euExample: '2025-522873-12-00',
     euButton: 'Find study',
-    euHelp:
-      'To search by condition, use the European map above. Looking up a number does not check whether you can take part.',
+    euHelp: 'Enter the EUCT number shown in the European record.',
     euInvalid: 'Enter a number in the format 2025-522873-12-00.',
     euNotFound:
       'No study with that number was found listing Greece. Check the original record in CTIS.',

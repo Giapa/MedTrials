@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import EuropeanStudySearch from './EuropeanStudySearch.vue'
 import {
   EuropeanStudyNotFoundError,
   fetchEuropeanStudy,
@@ -11,32 +12,42 @@ import { RegistryBusyError } from './study-api'
 
 defineProps<{ copy: InterfaceCopy; language: Language }>()
 const trialId = ref('')
+const lookupHeading = ref<HTMLHeadingElement | null>(null)
 const state = ref<
   | { kind: 'idle' | 'loading' }
   | { kind: 'error'; reason: 'invalid' | 'not-found' | 'busy' | 'unavailable' }
   | { kind: 'result'; study: EuropeanStudy }
 >({ kind: 'idle' })
+let lookupVersion = 0
+
+function selectTrial(id: string) {
+  trialId.value = id
+  void lookup()
+  lookupHeading.value?.focus()
+}
 
 async function lookup() {
   const id = trialId.value.trim()
-  if (state.value.kind === 'loading') return
+  const version = ++lookupVersion
   if (!isEuropeanTrialNumber(id)) {
     state.value = { kind: 'error', reason: 'invalid' }
     return
   }
   state.value = { kind: 'loading' }
   try {
-    state.value = { kind: 'result', study: await fetchEuropeanStudy(id) }
+    const study = await fetchEuropeanStudy(id)
+    if (version === lookupVersion) state.value = { kind: 'result', study }
   } catch (reason) {
-    state.value = {
-      kind: 'error',
-      reason:
-        reason instanceof EuropeanStudyNotFoundError
-          ? 'not-found'
-          : reason instanceof RegistryBusyError
-            ? 'busy'
-            : 'unavailable',
-    }
+    if (version === lookupVersion)
+      state.value = {
+        kind: 'error',
+        reason:
+          reason instanceof EuropeanStudyNotFoundError
+            ? 'not-found'
+            : reason instanceof RegistryBusyError
+              ? 'busy'
+              : 'unavailable',
+      }
   }
 }
 </script>
@@ -45,7 +56,9 @@ async function lookup() {
   <section class="search-section eu-section">
     <h2>{{ copy.euTitle }}</h2>
     <p>{{ copy.euIntro }}</p>
-    <form class="search-form" @submit.prevent="lookup">
+    <EuropeanStudySearch :copy="copy" @select="selectTrial" />
+    <h3 ref="lookupHeading" class="eu-lookup-heading" tabindex="-1">{{ copy.euLookupTitle }}</h3>
+    <form class="search-form eu-lookup-form" @submit.prevent="lookup">
       <label for="eu-trial-id">{{ copy.euNumber }}</label>
       <div class="search-controls">
         <input
@@ -64,7 +77,8 @@ async function lookup() {
       <p class="search-privacy">{{ copy.euHelp }}</p>
     </form>
     <div aria-live="polite">
-      <p v-if="state.kind === 'error'" class="message" role="alert">
+      <p v-if="state.kind === 'loading'">{{ copy.searching }}</p>
+      <p v-else-if="state.kind === 'error'" class="message" role="alert">
         {{
           state.reason === 'invalid'
             ? copy.euInvalid

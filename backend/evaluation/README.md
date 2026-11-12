@@ -26,6 +26,8 @@ For a valid search, `found` means the selected reference ID appears in the pages
 
 The target hit rate divides `found` by `found + missed` and excludes errors and changed references. It is **not** overall recall, precision, or a measure of eligibility. A miss can mean the chosen record was ranked beyond the checked pages, even if other useful records were returned.
 
+This command evaluates ClinicalTrials.gov only. It does not evaluate the separate European CTIS search or the Greek suggestion step in the website. See the [Greek suggestion evaluation](../../frontend/evaluation/README.md) for that step.
+
 The report is printed and optionally saved as JSON, including the case-file hash and UTC time. The command exits with status 1 if any cases have errors or changed references; it exits with status 0 for a completed measurement even when records are missed. Reports should be reviewed rather than used as an automatic safety approval.
 
 ## First observations
@@ -46,3 +48,7 @@ On 12 November, rerunning the same evaluation reproduced the errors. The app's c
 The app now makes at most one automatic retry after a 429. When no retry time is supplied, it waits ten seconds. When a valid retry time is supplied, it respects it if it is at most ten seconds; for longer or invalid values it returns a busy response without an automatic retry. Persistent rate limits are shown to users as a busy connection, and earlier pages remain visible. This is bounded error handling, not a guarantee against rate limiting.
 
 After this change, the [three-page run](rate-limit-2026-11-12.json) on 12 November 2026 at 13:20 Athens time found three references, missed seven, and had no errors. The breast-cancer reference appeared on page three; the diabetes and scleroderma references appeared on page two. The remaining cases included Greek searches and sentence-style searches. A single small run cannot prove that the errors are eliminated or that results are clinically suitable.
+
+## European search check
+
+On 12 November 2026, a live search in the app for `breast cancer` returned 38 CTIS records listing Greece, including [2025-522873-12-00](https://euclinicaltrials.eu/ctis-public/view/2025-522873-12-00) on the first page. The same query and country filter in the CTIS portal showed the same count and first records at that time. This record was selected while building the feature, so this is a working example, not an independent measure of relevance or coverage. Counts and ordering can change. The CTIS search still needs a separately reviewed set of relevant and irrelevant records.
