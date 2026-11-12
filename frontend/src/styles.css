@@ -392,6 +392,13 @@ a:focus-visible {
 .search-results {
   padding-top: 28px;
 }
+.eu-result {
+  margin-top: 24px;
+}
+.eu-result > p {
+  color: #526962;
+  line-height: 1.6;
+}
 .search-results .study-card {
   margin-top: 20px;
 }

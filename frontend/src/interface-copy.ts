@@ -51,6 +51,29 @@ export const interfaceCopy = {
     summarySource: 'Πηγή σύνοψης: Study Overview',
     locationsSource: 'Πηγή τοποθεσιών: Contacts and Locations',
     searchTitle: 'Αναζητήστε μελέτες στην Ελλάδα',
+    euTitle: 'Αναζητήστε ευρωπαϊκή μελέτη με αριθμό',
+    euIntro:
+      'Αν γνωρίζετε τον ευρωπαϊκό αριθμό μιας μελέτης (EUCT), μπορείτε να δείτε τα στοιχεία της από το CTIS.',
+    euNumber: 'Ευρωπαϊκός αριθμός μελέτης',
+    euExample: '2025-522873-12-00',
+    euButton: 'Εύρεση μελέτης',
+    euHelp:
+      'Για αναζήτηση με πάθηση, χρησιμοποιήστε τον ευρωπαϊκό χάρτη παραπάνω. Η αναζήτηση με αριθμό δεν ελέγχει αν μπορείτε να συμμετάσχετε.',
+    euInvalid: 'Εισαγάγετε αριθμό με τη μορφή 2025-522873-12-00.',
+    euNotFound:
+      'Δεν βρέθηκε μελέτη με αυτόν τον αριθμό που να αναφέρει την Ελλάδα. Ελέγξτε την αρχική καταχώριση στο CTIS.',
+    euBusy: 'Το ευρωπαϊκό μητρώο είναι απασχολημένο. Δοκιμάστε ξανά αργότερα.',
+    euError: 'Δεν ήταν δυνατή η φόρτωση από το ευρωπαϊκό μητρώο. Δοκιμάστε ξανά αργότερα.',
+    euCountry:
+      'Η Ελλάδα αναφέρεται στη μελέτη. Ελέγξτε στην αρχική καταχώριση αν κάποιο κέντρο αναζητά συμμετέχοντες.',
+    euCriteriaNote:
+      'Αυτά είναι τα κύρια κριτήρια όπως καταχωρίστηκαν, όχι έλεγχος καταλληλότητας. Μπορεί να υπάρχουν και άλλα. Συζητήστε τα με τον γιατρό και την ερευνητική ομάδα.',
+    euInclusion: 'Κύρια κριτήρια συμμετοχής',
+    euExclusion: 'Κύρια κριτήρια αποκλεισμού',
+    euGreekMissing: 'Δεν παρέχεται ελληνική μετάφραση',
+    euCriteriaMissing:
+      'Δεν δόθηκαν κύρια κριτήρια σε αυτά τα δεδομένα. Ελέγξτε την αρχική καταχώριση.',
+    euSource: 'Δείτε την ευρωπαϊκή καταχώριση στο CTIS',
     searchIntro:
       'Αναζητήστε μια πάθηση στο ClinicalTrials.gov με αγγλικό όρο. Για λίγες παθήσεις αναγνωρίζουμε και απλές ελληνικές φράσεις, όπως «Έχω διαβήτη τύπου 2».',
     condition: 'Πάθηση ή απλή φράση',
@@ -149,6 +172,28 @@ export const interfaceCopy = {
     summarySource: 'Source for summary: Study Overview',
     locationsSource: 'Source for locations: Contacts and Locations',
     searchTitle: 'Search studies in Greece',
+    euTitle: 'Look up a European study by number',
+    euIntro: 'If you know a European trial number (EUCT), you can view its information from CTIS.',
+    euNumber: 'European trial number',
+    euExample: '2025-522873-12-00',
+    euButton: 'Find study',
+    euHelp:
+      'To search by condition, use the European map above. Looking up a number does not check whether you can take part.',
+    euInvalid: 'Enter a number in the format 2025-522873-12-00.',
+    euNotFound:
+      'No study with that number was found listing Greece. Check the original record in CTIS.',
+    euBusy: 'The European registry is busy. Please try again later.',
+    euError:
+      'The European registry could not be reached or its data could not be read. Please try again later.',
+    euCountry:
+      'Greece is listed in this study. Check the original record to see whether a site is recruiting.',
+    euCriteriaNote:
+      'These are the main criteria as registered, not an eligibility check. There may be others. Discuss them with your doctor and the study team.',
+    euInclusion: 'Main inclusion criteria',
+    euExclusion: 'Main exclusion criteria',
+    euGreekMissing: 'Greek translation not provided',
+    euCriteriaMissing: 'No main criteria were provided in these data. Check the original record.',
+    euSource: 'View the European record in CTIS',
     searchIntro:
       'Search ClinicalTrials.gov using an English condition term. For a few conditions we also recognize simple Greek phrases, such as “Έχω διαβήτη τύπου 2”.',
     condition: 'Condition or simple phrase',

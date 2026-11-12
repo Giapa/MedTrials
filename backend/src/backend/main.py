@@ -4,11 +4,13 @@ import httpx
 from fastapi import Depends, FastAPI, HTTPException
 from pydantic import ValidationError
 
+from backend.eu_study import router as eu_study_router
 from backend.registry import RegistryStudy, get_registry, registry_client
 from backend.search import router as search_router
 
 app = FastAPI()
 app.include_router(search_router)
+app.include_router(eu_study_router)
 EXAMPLE_ID = "NCT02798055"
 
 

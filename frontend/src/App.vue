@@ -2,6 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import StudyCard from './StudyCard.vue'
 import StudySearch from './StudySearch.vue'
+import EuropeanStudyLookup from './EuropeanStudyLookup.vue'
 import { interfaceCopy, type Language } from './interface-copy'
 import { fetchExampleStudy, RegistryBusyError, type Study } from './study-api'
 
@@ -52,6 +53,7 @@ onMounted(loadStudy)
       </div>
     </section>
     <StudySearch :copy="copy" :language="language" />
+    <EuropeanStudyLookup :copy="copy" :language="language" />
     <section class="study-section" aria-live="polite">
       <div class="section-heading">
         <div>
