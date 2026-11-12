@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { isSmallCellSearch, mentionsNonSmallCell } from './ctis-search-safety'
 import { findGreekConditionTerm, hasGreekText } from './greek-condition-terms'
 import { searchEuropeanStudies, type EuropeanSearchResults } from './eu-study-api'
 import type { InterfaceCopy } from './interface-copy'
@@ -130,11 +131,25 @@ async function loadMore() {
           {{ state.results.total }}
         </p>
         <p>{{ copy.euSearchNote }}</p>
+        <p v-if="isSmallCellSearch(state.term)" class="subtype-caution">
+          {{ copy.euSubtypeCaution }}
+          <a href="https://www.cancer.gov/types/lung" target="_blank" rel="noopener noreferrer"
+            >{{ copy.euSubtypeSource }} ↗</a
+          >
+        </p>
         <p v-if="!state.results.studies.length">{{ copy.euEmpty }}</p>
         <article v-for="study in state.results.studies" :key="study.id" class="study-card">
           <span class="identifier">{{ study.id }}</span>
           <h4 lang="en">{{ study.title }}</h4>
           <p v-if="study.condition" lang="en">{{ study.condition }}</p>
+          <p
+            v-if="
+              isSmallCellSearch(state.term) && mentionsNonSmallCell(study.title, study.condition)
+            "
+            class="subtype-notice"
+          >
+            {{ copy.euSubtypeNotice }}
+          </p>
           <a :href="study.source_url" target="_blank" rel="noopener noreferrer"
             >{{ copy.euSource }} ↗</a
           >

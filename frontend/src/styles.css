@@ -402,6 +402,14 @@ a:focus-visible {
   display: block;
   margin-top: 16px;
 }
+.subtype-caution,
+.subtype-notice {
+  background: #fff8e4;
+  border-left: 3px solid #ae751e;
+  color: #5b481f;
+  line-height: 1.55;
+  padding: 12px 16px;
+}
 .eu-result > p {
   color: #526962;
   line-height: 1.6;

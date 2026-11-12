@@ -62,6 +62,11 @@ export const interfaceCopy = {
       'Ο όρος αποστέλλεται στο ευρωπαϊκό μητρώο CTIS. Μην συμπεριλάβετε όνομα, στοιχεία επικοινωνίας ή άλλα στοιχεία που σας ταυτοποιούν.',
     euSearchNote:
       'Πιθανώς σχετικές καταχωρίσεις με την Ελλάδα στις χώρες της μελέτης, όχι έλεγχος καταλληλότητας. Ο τίτλος και η πάθηση εμφανίζονται όπως παρέχονται από το μητρώο, συνήθως στα αγγλικά. Ελέγξτε στην καταχώριση την κατάσταση κάθε κέντρου.',
+    euSubtypeCaution:
+      'Ο μικροκυτταρικός και ο μη μικροκυτταρικός καρκίνος του πνεύμονα είναι διαφορετικοί τύποι. Το CTIS μπορεί να εμφανίσει και τους δύο. Ο έλεγχος επισημαίνει μόνο ορισμένες αναφορές· άλλες διαφορές ενδέχεται να μην επισημαίνονται. Ελέγξτε κάθε καταχώριση με τον γιατρό σας.',
+    euSubtypeSource: 'Πηγή για τους τύπους καρκίνου του πνεύμονα',
+    euSubtypeNotice:
+      'Ο τίτλος ή η πάθηση στο μητρώο αναφέρει «non-small cell» (μη μικροκυτταρικός). Ελέγξτε αν η μελέτη είναι σχετική. Αυτή η ένδειξη δεν κρίνει αν μπορείτε να συμμετάσχετε.',
     euTotal: 'Αποτελέσματα στο CTIS',
     euEmpty: 'Δεν βρέθηκαν αποτελέσματα. Αυτό δεν αποδεικνύει ότι δεν υπάρχει σχετική μελέτη.',
     euViewCriteria: 'Προβολή κύριων κριτηρίων',
@@ -194,6 +199,11 @@ export const interfaceCopy = {
       'The search term is sent to the European CTIS registry. Do not include your name, contact details, or other identifying information.',
     euSearchNote:
       'Potentially relevant records listing Greece among their countries, not an eligibility check. Titles and conditions are shown as provided by the registry, usually in English. Check the record for the status of each site.',
+    euSubtypeCaution:
+      'Small-cell and non-small-cell lung cancer are different types. CTIS may return both. This check flags only some text. Other differences may not be flagged. Check each record with your doctor.',
+    euSubtypeSource: 'Source for lung cancer types',
+    euSubtypeNotice:
+      'The registry title or condition mentions non-small cell. Check whether this trial is relevant. This flag does not decide whether you can take part.',
     euTotal: 'CTIS results',
     euEmpty: 'No results were found. This does not prove that no relevant study exists.',
     euViewCriteria: 'View main criteria',

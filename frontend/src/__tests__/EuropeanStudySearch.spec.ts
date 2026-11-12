@@ -111,3 +111,106 @@ it('preserves results after a busy page and retries the submitted search', async
   expect(wrapper.findAll('.eu-search-results article')).toHaveLength(2)
   expect(wrapper.text()).toContain('Second study')
 })
+
+it('flags an explicit non-small-cell mention without removing results for a small-cell search', async () => {
+  vi.stubGlobal(
+    'fetch',
+    vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        studies: [
+          {
+            id: '2025-522985-60-00',
+            title: 'Trial title',
+            condition: 'Non-small cell lung cancer',
+            source_url: 'https://euclinicaltrials.eu/ctis-public/view/2025-522985-60-00',
+          },
+          {
+            id: '2025-525026-35-00',
+            title: 'Small cell study',
+            condition: 'Small cell lung cancer',
+            source_url: 'https://euclinicaltrials.eu/ctis-public/view/2025-525026-35-00',
+          },
+        ],
+        page: 1,
+        total: 2,
+        more_results: false,
+      }),
+    }),
+  )
+  const wrapper = mount(EuropeanStudySearch, { props: { copy: interfaceCopy.en } })
+  await wrapper.get('input[name="eu-condition"]').setValue('small cell lung cancer')
+  await wrapper.get('form').trigger('submit')
+  await flushPromises()
+  const cards = wrapper.findAll('.eu-search-results article')
+  expect(cards).toHaveLength(2)
+  expect(wrapper.get('.subtype-caution').text()).toContain('Other differences may not be flagged')
+  expect(cards[0]?.get('.subtype-notice').text()).toContain('non-small cell')
+  expect(cards[0]?.get('a').attributes('href')).toBe(
+    'https://euclinicaltrials.eu/ctis-public/view/2025-522985-60-00',
+  )
+  expect(cards[1]?.find('.subtype-notice').exists()).toBe(false)
+  await wrapper.get('input[name="eu-condition"]').setValue('asthma')
+  expect(wrapper.find('.subtype-caution').exists()).toBe(true)
+})
+
+it('does not show a small-cell search warning for a non-small-cell search', async () => {
+  vi.stubGlobal(
+    'fetch',
+    vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        studies: [
+          {
+            id: '2025-522985-60-00',
+            title: 'Non-small cell study',
+            condition: 'Non-small cell lung cancer',
+            source_url: 'https://euclinicaltrials.eu/ctis-public/view/2025-522985-60-00',
+          },
+        ],
+        page: 1,
+        total: 1,
+        more_results: false,
+      }),
+    }),
+  )
+  const wrapper = mount(EuropeanStudySearch, { props: { copy: interfaceCopy.en } })
+  await wrapper.get('input[name="eu-condition"]').setValue('non-small cell lung cancer')
+  await wrapper.get('form').trigger('submit')
+  await flushPromises()
+  expect(wrapper.find('.subtype-caution').exists()).toBe(false)
+  expect(wrapper.find('.subtype-notice').exists()).toBe(false)
+})
+
+it('shows the warning after a user selects the Greek small-cell suggestion', async () => {
+  const fetchMock = vi.fn().mockResolvedValue({
+    ok: true,
+    json: async () => ({
+      studies: [
+        {
+          id: '2025-522985-60-00',
+          title: 'Non-small cell lung cancer',
+          condition: null,
+          source_url: 'https://euclinicaltrials.eu/ctis-public/view/2025-522985-60-00',
+        },
+      ],
+      page: 1,
+      total: 1,
+      more_results: false,
+    }),
+  })
+  vi.stubGlobal('fetch', fetchMock)
+  const wrapper = mount(EuropeanStudySearch, { props: { copy: interfaceCopy.el } })
+  await wrapper.get('input[name="eu-condition"]').setValue('μικροκυτταρικός καρκίνος πνεύμονα')
+  await wrapper.get('button[name="eu-use-term"]').trigger('click')
+  await wrapper.get('form').trigger('submit')
+  await flushPromises()
+  expect(fetchMock).toHaveBeenCalledWith(
+    '/api/eu-studies/search',
+    expect.objectContaining({
+      body: JSON.stringify({ condition: 'small cell lung cancer', page: 1 }),
+    }),
+  )
+  expect(wrapper.get('.subtype-caution').text()).toContain('μικροκυτταρικός')
+  expect(wrapper.get('.subtype-notice').text()).toContain('μη μικροκυτταρικός')
+})
