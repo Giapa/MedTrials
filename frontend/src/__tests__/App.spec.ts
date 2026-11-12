@@ -43,7 +43,16 @@ describe('example study', () => {
     const volunteers = facts.find((fact) => fact.text().includes('Δέχεται υγιείς εθελοντές'))
     expect(volunteers?.text()).toContain('Όχι')
     expect(wrapper.find('.participation a').attributes('href')).toBe(
-      'https://clinicaltrials.gov/study/NCT02798055',
+      'https://clinicaltrials.gov/study/NCT02798055#participation-criteria',
+    )
+    expect(wrapper.get('.summary-source').attributes('href')).toBe(
+      'https://clinicaltrials.gov/study/NCT02798055#study-overview',
+    )
+    expect(wrapper.get('.locations-source').attributes('href')).toBe(
+      'https://clinicaltrials.gov/study/NCT02798055#contacts-and-locations',
+    )
+    expect(wrapper.get('.dates-source').attributes('href')).toBe(
+      'https://clinicaltrials.gov/study/NCT02798055#study-record-dates',
     )
     expect(wrapper.find('a[href="https://clinicaltrials.gov/study/NCT02798055"]').exists()).toBe(
       true,

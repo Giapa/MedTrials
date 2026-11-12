@@ -213,6 +213,15 @@ h3 {
   font-size: 14px;
   font-weight: 650;
 }
+.fact-source {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.section-source {
+  font-size: 13px;
+}
 .detail {
   margin: 25px 0;
 }

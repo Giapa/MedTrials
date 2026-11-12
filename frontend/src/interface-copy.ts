@@ -46,6 +46,10 @@ export const interfaceCopy = {
       'Το κείμενο εμφανίζεται όπως καταχωρίστηκε, συνήθως στα αγγλικά, και μπορεί να περιέχει ιατρικούς όρους. Μπορεί να μην περιλαμβάνει όλες τις προϋποθέσεις και τους λόγους αποκλεισμού.',
     criteriaMissing: 'Το μητρώο δεν παρέχει κείμενο κριτηρίων.',
     criteriaSource: 'Πηγή: αρχική καταχώριση, ενότητα Participation Criteria',
+    statusSource: 'Πηγή κατάστασης',
+    datesSource: 'Πηγή ημερομηνίας',
+    summarySource: 'Πηγή σύνοψης: Study Overview',
+    locationsSource: 'Πηγή τοποθεσιών: Contacts and Locations',
     searchTitle: 'Αναζητήστε μελέτες στην Ελλάδα',
     searchIntro:
       'Αναζητήστε μια πάθηση στο ClinicalTrials.gov με αγγλικό όρο. Μπορούμε επίσης να προτείνουμε αγγλικούς όρους για λίγα συγκεκριμένα ονόματα παθήσεων στα ελληνικά.',
@@ -140,6 +144,10 @@ export const interfaceCopy = {
       'The text is shown as registered, usually in English, and may contain medical terms. It may not include every requirement or reason for exclusion.',
     criteriaMissing: 'The registry does not provide criteria text.',
     criteriaSource: 'Source: original record, Participation Criteria section',
+    statusSource: 'Source for status',
+    datesSource: 'Source for date',
+    summarySource: 'Source for summary: Study Overview',
+    locationsSource: 'Source for locations: Contacts and Locations',
     searchTitle: 'Search studies in Greece',
     searchIntro:
       'Search ClinicalTrials.gov using an English condition term. We can also suggest English terms for a few specific Greek condition names.',

@@ -37,16 +37,39 @@ function statusText(status: string | null | undefined, copy: InterfaceCopy) {
         <dt>{{ copy.status }}</dt>
         <dd>
           {{ statusText(study.status, copy) }}
+          <a
+            class="fact-source"
+            :href="study.source_url"
+            target="_blank"
+            rel="noopener noreferrer"
+            >{{ copy.statusSource }}</a
+          >
         </dd>
       </div>
       <div>
         <dt>{{ copy.updated }}</dt>
-        <dd>{{ study.last_updated ?? copy.missing }}</dd>
+        <dd>
+          {{ study.last_updated ?? copy.missing }}
+          <a
+            class="fact-source dates-source"
+            :href="`${study.source_url}#study-record-dates`"
+            target="_blank"
+            rel="noopener noreferrer"
+            >{{ copy.datesSource }}</a
+          >
+        </dd>
       </div>
     </dl>
     <div class="detail">
       <h4>{{ copy.about }}</h4>
       <p :lang="study.summary ? 'en' : language">{{ study.summary ?? copy.missing }}</p>
+      <a
+        class="section-source summary-source"
+        :href="`${study.source_url}#study-overview`"
+        target="_blank"
+        rel="noopener noreferrer"
+        >{{ copy.summarySource }} ↗</a
+      >
     </div>
     <div class="detail">
       <h4>{{ copy.locations }}</h4>
@@ -60,6 +83,13 @@ function statusText(status: string | null | undefined, copy: InterfaceCopy) {
         </li>
       </ul>
       <p v-else>{{ copy.noLocations }}</p>
+      <a
+        class="section-source locations-source"
+        :href="`${study.source_url}#contacts-and-locations`"
+        target="_blank"
+        rel="noopener noreferrer"
+        >{{ copy.locationsSource }} ↗</a
+      >
     </div>
     <ParticipationCriteria :study="study" :copy="copy" :language="language" />
     <div class="card-footer">

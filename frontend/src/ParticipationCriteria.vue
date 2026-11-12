@@ -55,7 +55,10 @@ function sexText(value: string | null, copy: InterfaceCopy) {
     <p class="criteria-text" :lang="study.eligibility.criteria ? 'en' : language">
       {{ study.eligibility.criteria || copy.criteriaMissing }}
     </p>
-    <a :href="study.source_url" target="_blank" rel="noopener noreferrer"
+    <a
+      :href="`${study.source_url}#participation-criteria`"
+      target="_blank"
+      rel="noopener noreferrer"
       >{{ copy.criteriaSource }} ↗</a
     >
   </details>
