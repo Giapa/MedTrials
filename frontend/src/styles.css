@@ -452,6 +452,10 @@ a:focus-visible {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
+.detail .objective-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
 @media (max-width: 640px) {
   .search-controls {
     flex-direction: column;

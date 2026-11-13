@@ -23,6 +23,15 @@ def record():
                         ],
                     },
                     "trialInformation": {
+                        "trialObjective": {
+                            "mainObjective": "Compare the two treatments.",
+                            "mainObjectiveTranslations": [
+                                {
+                                    "languageDescription": "Greek (Greece)",
+                                    "attributeTranslation": "Σύγκριση των δύο θεραπειών.",
+                                }
+                            ],
+                        },
                         "eligibilityCriteria": {
                             "principalInclusionCriteria": [
                                 {
@@ -41,7 +50,7 @@ def record():
                                     "principalExclusionCriteriaTranslations": [],
                                 }
                             ],
-                        }
+                        },
                     },
                 }
             },
@@ -73,6 +82,10 @@ def test_returns_greek_translations_and_original_criteria_with_source():
     assert response.json() == {
         "id": TRIAL_ID,
         "title": {"english": "A public title", "greek": "Δημόσιος τίτλος"},
+        "objective": {
+            "english": "Compare the two treatments.",
+            "greek": "Σύγκριση των δύο θεραπειών.",
+        },
         "inclusion": [
             {"english": "Adult participants", "greek": "Ενήλικες συμμετέχοντες"}
         ],
@@ -106,6 +119,40 @@ def test_missing_criteria_are_not_presented_as_rules():
     assert response.status_code == 200
     assert response.json()["inclusion"] == []
     assert response.json()["exclusion"] == []
+    assert response.json()["objective"] is None
+
+
+def test_preserves_missing_and_greek_only_objectives():
+    data = record()
+    objective = data["authorizedApplication"]["authorizedPartI"]["trialDetails"][
+        "trialInformation"
+    ]["trialObjective"]
+    objective["mainObjectiveTranslations"] = []
+    assert call_lookup(data).json()["objective"] == {
+        "english": "Compare the two treatments.",
+        "greek": None,
+    }
+    objective["mainObjective"] = None
+    objective["mainObjectiveTranslations"] = [
+        {
+            "languageDescription": "Greek (Greece)",
+            "attributeTranslation": "Σύγκριση θεραπειών.",
+        }
+    ]
+    assert call_lookup(data).json()["objective"] == {
+        "english": None,
+        "greek": "Σύγκριση θεραπειών.",
+    }
+    objective["mainObjectiveTranslations"] = []
+    assert call_lookup(data).json()["objective"] is None
+    objective["mainObjective"] = "   "
+    objective["mainObjectiveTranslations"] = [
+        {
+            "languageDescription": "French (France)",
+            "attributeTranslation": "Texte français",
+        }
+    ]
+    assert call_lookup(data).json()["objective"] is None
 
 
 def test_reports_source_failure_and_invalid_id():

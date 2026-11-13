@@ -3,10 +3,14 @@ import { RegistryBusyError } from './study-api'
 
 const trialIdPattern = /^[0-9]{4}-[0-9]{6}-[0-9]{2}-[0-9]{2}$/
 const textSchema = z.object({ english: z.string().min(1), greek: z.string().min(1).nullable() })
+const objectiveSchema = z
+  .object({ english: z.string().min(1).nullable(), greek: z.string().min(1).nullable() })
+  .refine((objective) => objective.english !== null || objective.greek !== null)
 const euStudySchema = z
   .object({
     id: z.string().regex(trialIdPattern),
     title: textSchema,
+    objective: objectiveSchema.nullable(),
     inclusion: z.array(textSchema),
     exclusion: z.array(textSchema),
     source_url: z.string(),

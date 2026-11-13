@@ -1,0 +1,51 @@
+{
+  "notice": "Only exact quotation locations are checked. This does not check whether any claim is true, complete, safe, or medically appropriate.",
+  "checked_at_utc": "2026-11-13T16:16:28.944026+00:00",
+  "dataset_sha256": "75cb65ee89c929e6fa3eef8db55e8d5213e11adf04acf4ede4776a1c343488a0",
+  "results": [
+    {
+      "id": "objective-excerpt",
+      "trial_id": "2025-522873-12-00",
+      "source_url": "https://euclinicaltrials.eu/ctis-public/view/2025-522873-12-00",
+      "field": "objective",
+      "index": null,
+      "language": "english",
+      "quote": "To compare PFS, based on a Local Investigator assessment between investigational (palazestrant with ribociclib + letrozole-matching placebo) and control (letrozole with ribociclib + palazestrant-matching placebo) arms.",
+      "claim": "The main goal compares an outcome between two study groups.",
+      "outcome": "quote_found"
+    },
+    {
+      "id": "greek-objective-excerpt",
+      "trial_id": "2025-522873-12-00",
+      "source_url": "https://euclinicaltrials.eu/ctis-public/view/2025-522873-12-00",
+      "field": "objective",
+      "index": null,
+      "language": "greek",
+      "quote": "Να συγκριθεί η επιβίωση χωρίς εξέλιξη της νόσου (PFS)",
+      "claim": "Ο κύριος στόχος περιλαμβάνει σύγκριση της επιβίωσης χωρίς εξέλιξη της νόσου.",
+      "outcome": "quote_found"
+    },
+    {
+      "id": "misleading-despite-real-quote",
+      "trial_id": "2025-522873-12-00",
+      "source_url": "https://euclinicaltrials.eu/ctis-public/view/2025-522873-12-00",
+      "field": "inclusion",
+      "index": 0,
+      "language": "english",
+      "quote": "1. Adult female or male participants.",
+      "claim": "Every adult can join this study.",
+      "outcome": "quote_found"
+    },
+    {
+      "id": "invented-quote",
+      "trial_id": "2025-522873-12-00",
+      "source_url": "https://euclinicaltrials.eu/ctis-public/view/2025-522873-12-00",
+      "field": "inclusion",
+      "index": 0,
+      "language": "english",
+      "quote": "All adults are eligible with no other requirements.",
+      "claim": "Every adult can join without other requirements.",
+      "outcome": "quote_not_found"
+    }
+  ]
+}

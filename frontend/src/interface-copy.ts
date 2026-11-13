@@ -83,11 +83,19 @@ export const interfaceCopy = {
     euError: 'Δεν ήταν δυνατή η φόρτωση από το ευρωπαϊκό μητρώο. Δοκιμάστε ξανά αργότερα.',
     euCountry:
       'Η Ελλάδα αναφέρεται στη μελέτη. Ελέγξτε στην αρχική καταχώριση αν κάποιο κέντρο αναζητά συμμετέχοντες.',
+    euObjective: 'Κύριος στόχος της μελέτης',
+    euObjectiveIntro:
+      'Το κείμενο εμφανίζεται όπως καταχωρίστηκε στο CTIS και μπορεί να περιέχει ιατρικούς όρους.',
+    euObjectiveMissing:
+      'Δεν βρέθηκε κύριος στόχος στα ελληνικά ή στα αγγλικά στα δεδομένα που ελέγχθηκαν. Δείτε την αρχική καταχώριση για άλλες γλώσσες.',
+    euObjectiveSource:
+      'Πηγή: CTIS → Full trial information → Main objective (English / additional languages)',
+    euEnglishMissing: 'Δεν βρέθηκε αγγλικό κείμενο στα δεδομένα που ελέγχθηκαν',
     euCriteriaNote:
       'Αυτά είναι τα κύρια κριτήρια όπως καταχωρίστηκαν, όχι έλεγχος καταλληλότητας. Μπορεί να υπάρχουν και άλλα. Συζητήστε τα με τον γιατρό και την ερευνητική ομάδα.',
     euInclusion: 'Κύρια κριτήρια συμμετοχής',
     euExclusion: 'Κύρια κριτήρια αποκλεισμού',
-    euGreekMissing: 'Δεν παρέχεται ελληνική μετάφραση',
+    euGreekMissing: 'Δεν βρέθηκε ελληνική μετάφραση στα δεδομένα που ελέγχθηκαν',
     euCriteriaMissing:
       'Δεν δόθηκαν κύρια κριτήρια σε αυτά τα δεδομένα. Ελέγξτε την αρχική καταχώριση.',
     euSource: 'Δείτε την ευρωπαϊκή καταχώριση στο CTIS',
@@ -220,11 +228,18 @@ export const interfaceCopy = {
       'The European registry could not be reached or its data could not be read. Please try again later.',
     euCountry:
       'Greece is listed in this study. Check the original record to see whether a site is recruiting.',
+    euObjective: 'Main objective of the study',
+    euObjectiveIntro: 'This text is shown as recorded in CTIS and may contain medical terms.',
+    euObjectiveMissing:
+      'No main objective in Greek or English was found in the data checked. See the original record for other languages.',
+    euObjectiveSource:
+      'Source: CTIS → Full trial information → Main objective (English / additional languages)',
+    euEnglishMissing: 'English text was not found in the data checked',
     euCriteriaNote:
       'These are the main criteria as registered, not an eligibility check. There may be others. Discuss them with your doctor and the study team.',
     euInclusion: 'Main inclusion criteria',
     euExclusion: 'Main exclusion criteria',
-    euGreekMissing: 'Greek translation not provided',
+    euGreekMissing: 'Greek translation was not found in the data checked',
     euCriteriaMissing: 'No main criteria were provided in these data. Check the original record.',
     euSource: 'View the European record in CTIS',
     searchIntro:

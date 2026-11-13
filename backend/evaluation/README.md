@@ -66,3 +66,17 @@ On 12 November 2026, the [two-page run](eu-baseline-2026-11-12.json) found four 
 The website now shows a limited caution for the exact `small cell lung cancer` search and flags some results that explicitly mention `non-small cell` in their displayed title or condition. The backend evaluation still reports the mismatch because the app keeps the record visible. The evaluation does not measure the warning or detect all mismatches; its result should not be interpreted as proof that unflagged records match.
 
 This is a small development set, not an independent benchmark. Some references were found while building or inspecting the search; two cases use the same diabetes reference. The examples have not been reviewed by a clinician and do not measure eligibility, full recall, overall precision, translation quality, or the Greek website interaction. The raw English query is sent to CTIS through the app and saved in the report. Do not add real patient details. Registry contents, ordering and availability can change; a missing target may be beyond the pages checked.
+
+## Checking quoted evidence
+
+The separate [quote examples](quote-cases.json) use a public CTIS record that lists Greece. To check them against the current record:
+
+```sh
+uv run python -m backend.evidence_check
+```
+
+The command checks the trial number and source link, then looks for each exact quote in the specified objective, inclusion criterion or exclusion criterion and language. Criterion `index` starts at zero. It fetches the record through the app's CTIS lookup, which requires Greece to be listed. It reports `quote_found`, `quote_not_found`, `field_unavailable`, or `source_error`. A missing field, a changed record, or a connection error is not evidence that a claim is false. The command exits with status 1 when any quote cannot be checked or found. This example intentionally contains an invented quote, so a status of 1 is expected when the source is available.
+
+The [13 November run](quote-baseline-2026-11-13.json) found the Greek and English objective excerpts and an inclusion excerpt; it did not find the invented quote. The inclusion excerpt accompanies a deliberately misleading claim that every adult can join. The quote is real, but the record has additional inclusion and exclusion criteria. **A found quote does not establish that its claim is true, complete, safe, or medically correct.** This check must not be used on its own to approve or display generated explanations.
+
+The examples are manually written and have not been reviewed by a clinician. The check does not evaluate paraphrases, omitted criteria, interpretation, eligibility, or the source's accuracy. It currently covers CTIS records only and relies on the portal's undocumented data endpoint. Registry text can change, so a previously matching quote can stop matching. The input and printed report contain the supplied claims and quotes; only trial numbers are sent to the app's CTIS lookup. The report is not saved unless `--output` is supplied. Do not put real patient details in example files or saved reports.

@@ -100,6 +100,32 @@ async function lookup() {
         </h3>
         <p v-if="language === 'el' && !state.study.title.greek">{{ copy.euGreekMissing }}</p>
         <p>{{ copy.euCountry }}</p>
+        <div class="detail eu-objective">
+          <h4>{{ copy.euObjective }}</h4>
+          <p>{{ copy.euObjectiveIntro }}</p>
+          <template v-if="state.study.objective">
+            <p
+              v-if="language === 'el'"
+              class="objective-text"
+              :lang="state.study.objective.greek ? 'el' : 'en'"
+            >
+              {{ state.study.objective.greek || state.study.objective.english }}
+            </p>
+            <p v-else class="objective-text" :lang="state.study.objective.english ? 'en' : 'el'">
+              {{ state.study.objective.english || state.study.objective.greek }}
+            </p>
+            <p v-if="language === 'el' && !state.study.objective.greek">
+              {{ copy.euGreekMissing }}
+            </p>
+            <p v-if="language === 'en' && !state.study.objective.english">
+              {{ copy.euEnglishMissing }}
+            </p>
+          </template>
+          <p v-else>{{ copy.euObjectiveMissing }}</p>
+          <a :href="state.study.source_url" target="_blank" rel="noopener noreferrer"
+            >{{ copy.euObjectiveSource }} ↗</a
+          >
+        </div>
         <p>{{ copy.euCriteriaNote }}</p>
         <div
           v-for="group in [

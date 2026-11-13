@@ -37,8 +37,14 @@ class Eligibility(BaseModel):
     principalExclusionCriteria: list[Exclusion] = []
 
 
+class Objective(BaseModel):
+    mainObjective: str | None = None
+    mainObjectiveTranslations: list[Translation] | None = None
+
+
 class TrialInformation(BaseModel):
     eligibilityCriteria: Eligibility = Eligibility()
+    trialObjective: Objective | None = None
 
 
 class TrialDetails(BaseModel):
@@ -116,6 +122,15 @@ async def get_eu_study(
             )
         else:
             title = text_pair(identifiers.fullTitle, identifiers.fullTitleTranslations)
+        objective = None
+        source_objective = details.trialInformation.trialObjective
+        if source_objective is not None:
+            english = source_objective.mainObjective
+            if english is not None and not english.strip():
+                english = None
+            greek = greek_translation(source_objective.mainObjectiveTranslations or [])
+            if english is not None or greek is not None:
+                objective = {"english": english, "greek": greek}
         criteria = details.trialInformation.eligibilityCriteria
         inclusion = [
             text_pair(
@@ -138,6 +153,7 @@ async def get_eu_study(
     return {
         "id": trial_id,
         "title": title,
+        "objective": objective,
         "inclusion": inclusion,
         "exclusion": exclusion,
         "source_url": f"https://euclinicaltrials.eu/ctis-public/view/{trial_id}",
